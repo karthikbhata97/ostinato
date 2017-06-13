@@ -254,6 +254,7 @@ void StreamConfigDialog::setupUiExtra()
     bgProto[ProtoL4]->addButton(rbL4None, ButtonIdNone);
     bgProto[ProtoL4]->addButton(rbL4Tcp, OstProto::Protocol::kTcpFieldNumber);
     bgProto[ProtoL4]->addButton(rbL4Udp, OstProto::Protocol::kUdpFieldNumber);
+    bgProto[ProtoL4]->addButton(rbL4Ssl, OstProto::Protocol::kSslFieldNumber);
     bgProto[ProtoL4]->addButton(rbL4Icmp, OstProto::Protocol::kIcmpFieldNumber);
     bgProto[ProtoL4]->addButton(rbL4Igmp, OstProto::Protocol::kIgmpFieldNumber);
     bgProto[ProtoL4]->addButton(rbL4Mld, OstProto::Protocol::kMldFieldNumber);

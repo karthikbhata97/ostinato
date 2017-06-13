@@ -35,6 +35,7 @@ PROTOS += \
     mld.proto \
     tcp.proto \
     udp.proto \
+    ssl.proto \
     textproto.proto \
     userscript.proto \
     hexdump.proto \
@@ -73,6 +74,7 @@ HEADERS += \
     mld.h \
     tcp.h \
     udp.h \
+    ssl.h \
     textproto.h \
     hexdump.h \
     payload.h \
@@ -106,6 +108,7 @@ SOURCES += \
     mld.cpp \
     tcp.cpp \
     udp.cpp \
+    ssl.cpp \
     textproto.cpp \
     hexdump.cpp \
     payload.cpp \

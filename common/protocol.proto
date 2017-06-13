@@ -156,6 +156,8 @@ message Protocol {
         kIgmpFieldNumber = 403;
         kMldFieldNumber = 404;
 
+        kSslFieldNumber = 451;
+
         kTextProtocolFieldNumber = 500;
     }
 }

@@ -23,6 +23,7 @@ FORMS += \
     icmp.ui \
     tcp.ui \
     udp.ui \
+    ssl.ui \
     textproto.ui \
     hexdump.ui \
     payload.ui \
@@ -75,6 +76,7 @@ HEADERS += \
     mldconfig.h \
     tcpconfig.h \
     udpconfig.h \
+    sslconfig.h \
     textprotoconfig.h \
     hexdumpconfig.h \
     payloadconfig.h \
@@ -114,6 +116,7 @@ SOURCES += \
     mldconfig.cpp \
     tcpconfig.cpp \
     udpconfig.cpp \
+    sslconfig.cpp \
     textprotoconfig.cpp \
     hexdumpconfig.cpp \
     payloadconfig.cpp \
@@ -135,6 +138,7 @@ SOURCES += \
     mldpdml.cpp \
     tcppdml.cpp \
     udppdml.cpp \
+    sslpdml.cpp \
     textprotopdml.cpp \
     samplepdml.cpp
 

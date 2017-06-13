@@ -45,6 +45,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "mldconfig.h"
 #include "tcpconfig.h"
 #include "udpconfig.h"
+
+#include "sslconfig.h"
 // L5 Protocol Widgets
 #include "textprotoconfig.h"
 // Special Protocol Widgets
@@ -138,6 +140,11 @@ ProtocolWidgetFactory::ProtocolWidgetFactory()
     OstProtocolWidgetFactory->registerProtocolConfigWidget(
             OstProto::Protocol::kUdpFieldNumber, 
             (void*) UdpConfigForm::createInstance);
+
+
+    OstProtocolWidgetFactory->registerProtocolConfigWidget(
+            OstProto::Protocol::kSslFieldNumber, 
+            (void*) SslConfigForm::createInstance);
 
     // Layer 5 Protocols
     OstProtocolWidgetFactory->registerProtocolConfigWidget(

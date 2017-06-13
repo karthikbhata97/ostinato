@@ -52,6 +52,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "tcp.h"    
 #include "udp.h"    
 
+#include "ssl.h"
+
 // L5 Protos
 #include "textproto.h"
 
@@ -121,6 +123,10 @@ ProtocolManager::ProtocolManager()
             (void*) TcpProtocol::createInstance);
     registerProtocol(OstProto::Protocol::kUdpFieldNumber,
             (void*) UdpProtocol::createInstance);
+
+
+    registerProtocol(OstProto::Protocol::kSslFieldNumber,
+            (void*) SslProtocol::createInstance);
 
     // Layer 5 Protocols
     registerProtocol(OstProto::Protocol::kTextProtocolFieldNumber,
