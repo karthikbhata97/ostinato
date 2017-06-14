@@ -42,11 +42,7 @@ See AbstractProtocolConfigForm::loadWidget() for more info
 */
 void SslConfigForm::loadWidget(AbstractProtocol *proto)
 {
-    sslType->setText(
-        proto->fieldData(
-            SslProtocol::ssl_type,
-            AbstractProtocol::FieldValue
-        ).toString());
+
     sslVersion->setText(
         proto->fieldData(
             SslProtocol::ssl_version,
@@ -60,10 +56,11 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
         ).toString());
 
     isChecksumOverride->setChecked(
-        proto->fieldData(
-            SslProtocol::ssl_is_override_checksum,
-            AbstractProtocol::FieldValue
-        ).toBool());
+            proto->fieldData(
+                SslProtocol::ssl_is_override_checksum,
+                AbstractProtocol::FieldValue
+    ).toBool());
+
 }
 
 /*!
@@ -73,9 +70,7 @@ See AbstractProtocolConfigForm::storeWidget() for more info
 */
 void SslConfigForm::storeWidget(AbstractProtocol *proto)
 {
-    proto->setFieldData(
-        SslProtocol::ssl_type,
-        sslType->text());
+
     proto->setFieldData(
         SslProtocol::ssl_version,
         sslVersion->text());
@@ -84,8 +79,9 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
         SslProtocol::ssl_payloadLength,
         sslPayloadLength->text());
     proto->setFieldData(
-        SslProtocol::ssl_is_override_checksum, 
+            SslProtocol::ssl_is_override_checksum,
 
-        isChecksumOverride->isChecked());
+    isChecksumOverride->isChecked());
+
 }
 

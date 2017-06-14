@@ -25,7 +25,6 @@ package OstProto;
 message Ssl {
 
     optional bool is_override_checksum    = 1;
-
     optional uint32    type = 2; 
     optional uint32    payload_length = 3;
     optional uint32    version = 4;

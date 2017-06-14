@@ -145,6 +145,7 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
             flags |= MetaField;
             break;
 
+
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
@@ -252,6 +253,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             }
             break;
         }
+
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
@@ -304,6 +306,8 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             isOk = true;
             break;
         }
+
+
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);

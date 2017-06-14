@@ -6,46 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>263</width>
-    <height>120</height>
+    <width>455</width>
+    <height>387</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label_22">
-     <property name="text">
-      <string>Type</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="buddy">
-      <cstring>sslType</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="sslType">
-     <property name="inputMask">
-      <string>&gt;HH</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QCheckBox" name="isChecksumOverride">
-     <property name="text">
-      <string>Checksum</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="3">
-    <widget class="QLineEdit" name="sslChecksum">
+   <item row="1" column="4">
+    <widget class="QLineEdit" name="sslVersion">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -54,40 +24,17 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_24">
-     <property name="text">
-      <string>Version</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="buddy">
-      <cstring>sslVersion</cstring>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="1">
-    <widget class="QLineEdit" name="sslVersion">
-     <property name="inputMask">
-      <string>&gt;HH HH</string>
+    <widget class="QLineEdit" name="sslPayloadLength">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>
-   <item row="1" column="4">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="label_27">
      <property name="text">
       <string>Length</string>
@@ -100,15 +47,31 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="sslPayloadLength">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
+   <item row="1" column="3">
+    <widget class="QLabel" name="label_24">
      <property name="text">
-      <string/>
+      <string>Version</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buddy">
+      <cstring>sslVersion</cstring>
      </property>
     </widget>
+   </item>
+   <item row="0" column="4">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item row="3" column="2">
     <spacer>
@@ -123,32 +86,262 @@
      </property>
     </spacer>
    </item>
+   <item row="2" column="0" rowspan="2" colspan="2">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>TYPE</string>
+     </property>
+     <widget class="QCheckBox" name="isChecksumOverride">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>88</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>ALERT</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>161</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>CHANGE CIPHER SPEC</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>111</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>HANDSHAKE</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="2" column="3" rowspan="2" colspan="2">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Action</string>
+     </property>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>59</width>
+        <height>14</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="sslChecksum">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>79</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>SELECT</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>FATAL</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>WARNING</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>59</width>
+        <height>14</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>SEVERITY</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>20</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>DESCRIPTION</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="isChecksumOverride1">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>40</y>
+        <width>79</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>SELECT</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CLOSE_NOTIFY</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>UNEXPECTED_MESSAGE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>BAD_RECORD_MAC</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>DECRYPTION_FAILED</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>RECORD_OVERFLOW </string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>DECOMPRESSION_FAILURE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>HANDSHAKE_FAILURE</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="comboBox">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>79</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>SELECT</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CLIENT_HELLO</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>HELLO_REQUEST</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SERVER_HELLO</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CERTIFICATE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SERVER_KEY_EXCHANGE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CERTIFICATE_REQUEST</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SERVER_DONE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CERTIFICATE_VERIFY</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>CLIENT_KEY_EXCHANGE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>FINISHED</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>HANDSHAKE</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>sslType</tabstop>
-  <tabstop>sslVersion</tabstop>
-  <tabstop>sslPayloadLength</tabstop>
-  <tabstop>isChecksumOverride</tabstop>
-  <tabstop>sslChecksum</tabstop>
- </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>isChecksumOverride</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>sslChecksum</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>345</x>
-     <y>122</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>122</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
