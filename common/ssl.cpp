@@ -140,7 +140,8 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         case ssl_payloadLength:
             break;
 
-        case ssl_is_override_checksum:
+
+        case ssl_action:
             flags &= ~FrameField;
             flags |= MetaField;
             break;
@@ -242,17 +243,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             break;
         }
         // Meta fields
-        case ssl_is_override_checksum:
-        {
-            switch(attrib)
-            {
-                case FieldValue:
-                    return data.is_override_checksum();
-                default:
-                    break;
-            }
-            break;
-        }
+
 
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
@@ -297,13 +288,6 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint len = value.toUInt(&isOk);
             if (isOk)
                 data.set_payload_length(len);
-            break;
-        }
-        case ssl_is_override_checksum:
-        {
-            bool ovr = value.toBool();
-            data.set_is_override_checksum(ovr);
-            isOk = true;
             break;
         }
 
