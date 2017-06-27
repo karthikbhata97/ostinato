@@ -42,12 +42,6 @@ public:
         ssl_version,
         ssl_payloadLength,
 
-        ssl_action,
-
-        // Meta Fields
-
-
-
         ssl_fieldCount
     };
 

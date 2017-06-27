@@ -78,7 +78,7 @@ PdmlReader::PdmlReader(OstProto::StreamConfigList *streams)
     factory_.insert("stp", PdmlStpProtocol::createInstance);
     factory_.insert("tcp", PdmlTcpProtocol::createInstance);
     factory_.insert("udp", PdmlUdpProtocol::createInstance);
-//    factory_.insert("ssl", PdmlSslProtocol::createInstance);
+    factory_.insert("ssl", PdmlSslProtocol::createInstance);
     factory_.insert("udplite", PdmlUdpProtocol::createInstance);
     factory_.insert("vlan", PdmlVlanProtocol::createInstance);
 }

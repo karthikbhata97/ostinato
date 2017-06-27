@@ -27,7 +27,7 @@ class PdmlSslProtocol : public PdmlProtocol
 public:
     virtual ~PdmlSslProtocol();
 
-    static PdmlSslProtocol* createInstance();
+    static PdmlProtocol* createInstance();
 
     virtual void preProtocolHandler(QString name, 
             const QXmlStreamAttributes &attributes, int expectedPos, 

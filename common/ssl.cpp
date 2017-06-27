@@ -54,7 +54,7 @@ void SslProtocol::protoDataCopyFrom(const OstProto::Protocol &protocol)
 
 QString SslProtocol::name() const
 {
-    return QString("Ssl Protocol");
+    return QString("SSL Protocol");
 }
 
 QString SslProtocol::shortName() const
@@ -140,13 +140,6 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         case ssl_payloadLength:
             break;
 
-
-        case ssl_action:
-            flags &= ~FrameField;
-            flags |= MetaField;
-            break;
-
-
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
@@ -168,20 +161,25 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
     {
         case ssl_type:
         {
-            int type = data.type() >> 13;
+            int type = data.type() & 0xFF;
 
             switch(attrib)
             {
                 case FieldName:            
-                    return QString("A");
+                    return QString("Type");
                 case FieldValue:
                     return type;
                 case FieldTextValue:
                     return QString("%1").arg(type);
                 case FieldFrameValue:
-                    return QByteArray(1, (char) type);
+                {
+                    QByteArray fv;
+                    fv.resize(1);
+                    qToBigEndian((quint8) type, (uchar*) fv.data());
+                    return fv;
+                }
                 case FieldBitSize:
-                    return 3;
+                    return 8;
                 default:
                     break;
             }
@@ -190,12 +188,12 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
         }
         case ssl_version:
         {
-            int version = data.version() & 0x1FFF;
+            int version = data.version() & 0xFFFF;
 
             switch(attrib)
             {
                 case FieldName:            
-                    return QString("B");
+                    return QString("Version");
                 case FieldValue:
                     return version;
                 case FieldTextValue:
@@ -208,7 +206,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                     return fv;
                 }
                 case FieldBitSize:
-                    return 13;
+                    return 16;
                 default:
                     break;
             }
@@ -217,24 +215,22 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
 
         case ssl_payloadLength:
         {
+            int payload_length = data.payload_length() & 0xFFFF;
             switch(attrib)
             {
                 case FieldName:            
                     return QString("Payload Length");
                 case FieldValue:
-                    return protocolFramePayloadSize(streamIndex);
+                    return payload_length;
                 case FieldFrameValue:
                 {
                     QByteArray fv;
-                    int totlen;
-                    totlen = protocolFramePayloadSize(streamIndex);
                     fv.resize(2);
-                    qToBigEndian((quint16) totlen, (uchar*) fv.data());
+                    qToBigEndian((quint16) payload_length, (uchar*) fv.data());
                     return fv;
                 }
                 case FieldTextValue:
-                    return QString("%1").arg(
-                        protocolFramePayloadSize(streamIndex));
+                    return QString("%1").arg(payload_length);
                 case FieldBitSize:
                     return 16;
                 default:

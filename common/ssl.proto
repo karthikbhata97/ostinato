@@ -23,11 +23,9 @@ package OstProto;
 
 // Ssl Protocol
 message Ssl {
-
-    optional string    action = 1;
-    optional uint32    type = 2; 
+    optional uint32    type = 1;
+    optional uint32    version = 2;
     optional uint32    payload_length = 3;
-    optional uint32    version = 4;
 }
 
 extend Protocol {

@@ -42,15 +42,16 @@ PdmlSslProtocol::PdmlSslProtocol()
 {
     ostProtoId_ = OstProto::Protocol::kSslFieldNumber;
 
-//    fieldMap_.insert("ssl.checksum", OstProto::Ssl::kChecksumFieldNumber);
-
+    fieldMap_.insert("ssl.record.content_type", OstProto::Ssl::kTypeFieldNumber);
+    fieldMap_.insert("ssl.record.version", OstProto::Ssl::kVersionFieldNumber);
+    fieldMap_.insert("ssl.record.length", OstProto::Ssl::kPayloadLengthFieldNumber);
 }
 
 PdmlSslProtocol::~PdmlSslProtocol()
 {
 }
 
-PdmlSslProtocol* PdmlSslProtocol::createInstance()
+PdmlProtocol* PdmlSslProtocol::createInstance()
 {
     return new PdmlSslProtocol();
 }
