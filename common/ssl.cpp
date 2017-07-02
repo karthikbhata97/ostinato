@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 
 #include "ssl.h"
+#include <iostream>
 
 SslProtocol::SslProtocol(StreamBase *stream, AbstractProtocol *parent)
     : AbstractProtocol(stream, parent)
@@ -162,15 +163,14 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
         case ssl_type:
         {
             int type = data.type() & 0xFF;
-
             switch(attrib)
             {
                 case FieldName:            
-                    return QString("Type");
+                    return QString("Content Type");
                 case FieldValue:
                     return type;
                 case FieldTextValue:
-                    return QString("%1").arg(type);
+                    return QString("%1 %2").arg(type, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.type_showname().c_str()));
                 case FieldFrameValue:
                 {
                     QByteArray fv;
@@ -197,7 +197,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldValue:
                     return version;
                 case FieldTextValue:
-                    return QString("%1").arg(version, 4, BASE_HEX, QChar('0'));
+                    return QString("%1 %2").arg(version, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.version_showname().c_str()));
                 case FieldFrameValue:
                 {
                     QByteArray fv;
@@ -219,7 +219,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             switch(attrib)
             {
                 case FieldName:            
-                    return QString("Payload Length");
+                    return QString("Length");
                 case FieldValue:
                     return payload_length;
                 case FieldFrameValue:
@@ -239,7 +239,6 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             break;
         }
         // Meta fields
-
 
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,

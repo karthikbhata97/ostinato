@@ -22,12 +22,234 @@ import "protocol.proto";
 package OstProto;
 
 // Ssl Protocol
-message Ssl {
-    optional uint32    type = 1;
-    optional uint32    version = 2;
-    optional uint32    payload_length = 3;
+
+message Extention {
+        optional uint32 length = 1;
+        optional string length_showname = 2;
+        optional bytes extention = 3;
+        optional string extention_showname = 4;
 }
 
+message Certificate {
+        optional uint32 length = 1;
+        optional string length_showname = 2;
+        optional bytes certificate = 3;
+        optional string certificate_showname = 4;
+}
+
+message DistinguishedName {
+        optional uint32 length = 1;
+        optional string length_showname = 2;
+        optional bytes distinguishedname = 3;
+        optional string distinguishedname_showname = 4;
+}
+
+message Ssl {
+        optional uint32 type = 1;
+        optional string type_showname = 2;
+        optional uint32 version = 3;
+        optional string version_showname = 4;
+        optional uint32 payload_length = 5;
+        optional string payload_length_showname = 6;
+
+    message Handshake {
+
+        message HelloRequest {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 version = 3;
+                        optional string version_showname = 4;
+            }
+
+            message ClientHello {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 version = 3;
+                        optional string version_showname = 4;
+                        optional uint32 length = 5;
+                        optional string length_showname = 6;
+                        optional bytes random = 7;
+                        optional string random_showname = 8;
+                        optional uint32 session_id_length = 9;
+                        optional string session_id_length_showname = 10;
+                        optional bytes session_id = 11;
+                        optional string session_id_showname = 12;
+                        optional uint32 ciphersuites_length = 13;
+                        optional string ciphersuites_length_showname = 14;
+                        repeated bytes ciphersuite = 15;
+                        repeated string ciphersuite_showname = 16;
+                        optional uint32 compression_methods_length = 17;
+                        optional string compression_methods_length_showname = 18;
+                        repeated uint32 compression_method = 19;
+                        repeated string compression_method_showname = 20;
+                        optional uint32 extensions_length = 21;
+                        optional string extensions_length_showname = 22;
+                        repeated Extention extention = 23;
+                        repeated string extention_showname = 24;
+            }
+
+            message ServerHello {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 version = 3;
+                        optional string version_showname = 4;
+                        optional uint32 length = 5;
+                        optional string length_showname = 6;
+                        optional bytes random = 7;
+                        optional string random_showname = 8;
+                        optional uint32 session_id_length = 9;
+                        optional string session_id_length_showname = 10;
+                        optional bytes session_id = 11;
+                        optional string session_id_showname = 12;
+                        optional uint32 ciphersuite = 13;
+                        optional string ciphersuite_showname = 14;
+                        optional uint32 comp_method = 15;
+                        optional string comp_method_showname = 16;
+                        optional uint32 extensions_length = 17;
+                        optional string extensions_length_showname = 18;
+                        repeated Extention extentions = 19;
+                        repeated string extentions_showname = 20;
+            }
+
+            message CertificateHandshake {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 length = 3;
+                        optional string length_showname = 4;
+                        optional uint32 certificates_length = 5;
+                        optional string certificates_length_showname = 6;
+                        repeated Certificate certificate = 7;
+                        repeated string certificate_showname = 8;
+            }
+
+            message ServerKeyExchange {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 length = 3;
+                        optional string length_showname = 4;
+                        optional bytes server_key = 5;
+                        optional string server_key_showname = 6;
+            }
+
+            message CertificateRequest {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 length = 3;
+                        optional string length_showname = 4;
+                        optional uint32 certificate_types = 5;
+                        optional string certificate_types_showname = 6;
+                        repeated uint32 certificate_type = 7;
+                        repeated string certificate_type_showname = 8;
+                        optional uint32 distinguished_names_length = 9;
+                        optional string distinguished_names_length_showname = 10;
+                        repeated DistinguishedName distinguishedname = 11;
+                        repeated string distinguishedname_showname = 12;
+            }
+
+            message ServerHelloDone {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 length = 3;
+                        optional string length_showname = 4;
+            }
+
+            message CertificateVerify {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 length = 3;
+                        optional string length_showname = 4;
+                        optional bytes sighed_hash = 5;
+                        optional string sighed_hash_showname = 6;
+            }
+
+            message ClientKeyExchange {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 length = 3;
+                        optional string length_showname = 4;
+                        optional bytes key = 5;
+                        optional string key_showname = 6;
+            }
+
+            message Finished {
+                        optional uint32 type = 1;
+                        optional string type_showname = 2;
+                        optional uint32 length = 3;
+                        optional string length_showname = 4;
+                        optional bytes sighed_hash = 5;
+                        optional string sighed_hash_showname = 6;
+            }
+
+                optional HelloRequest hello_request = 1;
+                optional string hello_request_showname = 2;
+                optional ClientHello client_hello = 3;
+                optional string client_hello_showname = 4;
+                optional ServerHello server_hello = 5;
+                optional string server_hello_showname = 6;
+                optional CertificateHandshake certificate_handshake = 7;
+                optional string certificate_handshake_showname = 8;
+                optional ServerKeyExchange server_key_exchange = 9;
+                optional string server_key_exchange_showname = 10;
+                optional CertificateRequest certificate_request = 11;
+                optional string certificate_request_showname = 12;
+                optional ServerHelloDone server_hello_done = 13;
+                optional string server_hello_done_showname = 14;
+                optional CertificateVerify certificate_verify = 15;
+                optional string certificate_verify_showname = 16;
+                optional ClientKeyExchange client_key_exchange = 17;
+                optional string client_key_exchange_showname = 18;
+                optional Finished finished = 19;
+                optional string finished_showname = 20;
+        }
+
+    message ChangeCipherSpec {
+                optional uint32 ccs = 1;
+                optional string ccs_showname = 2;
+    }
+
+    message Alert {
+        enum AlertLevel {
+            warning = 1;
+            fatal = 2;
+        }
+
+        enum AlertDescription {
+            close_notify = 1;
+            unexpected_message = 2;
+            bad_record_mac = 3;
+            decompression_failure = 4;
+            handshake_failure = 5;
+            no_certificate = 6;
+            bad_certificate = 7;
+            unsupported_certificate = 8;
+            certificate_revoked = 9;
+            certificate_expired = 10;
+            certificate_unknown = 11;
+            illegal_parameter = 12;
+        }
+
+                optional AlertLevel alert_level = 1;
+                optional string alert_level_showname = 2;
+                optional AlertDescription alert_description = 3;
+                optional string alert_description_showname = 4;
+    }
+
+    message ApplicationData {
+                optional bytes data = 1;
+                optional string data_showname = 2;
+    }
+
+                optional Handshake handshake = 7;
+                optional string handshake_showname = 8;
+                optional Alert alert = 9;
+                optional string alert_showname = 10;
+                optional ChangeCipherSpec change_cipher_spec = 11;
+                optional string change_cipher_spec_showname = 12;
+                optional ApplicationData application_data = 13;
+                optional string application_data_showname = 14;
+}
+
+
 extend Protocol {
-    optional Ssl ssl = 451;
+                optional Ssl ssl = 451;
 }

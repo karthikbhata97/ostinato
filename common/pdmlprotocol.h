@@ -50,7 +50,7 @@ public:
 
     void fieldHandler(QString name, const QXmlStreamAttributes &attributes, 
             OstProto::Protocol *pbProto, OstProto::Stream *stream);
-    void knownFieldHandler(QString name, QString valueHexStr,
+    virtual void knownFieldHandler(QString name, QString valueHexStr, const QXmlStreamAttributes &attributes,
             OstProto::Protocol *pbProto);
     virtual void unknownFieldHandler(QString name, int pos, int size, 
             const QXmlStreamAttributes &attributes, 

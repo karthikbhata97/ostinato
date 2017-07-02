@@ -37,12 +37,11 @@ public:
     virtual void postProtocolHandler(OstProto::Protocol *pbProto, 
             OstProto::Stream *stream);
 
-    void fieldHandler(QString name, const QXmlStreamAttributes &attributes, 
-            OstProto::Protocol *pbProto, OstProto::Stream *stream);
     virtual void unknownFieldHandler(QString name, int pos, int size, 
             const QXmlStreamAttributes &attributes, 
             OstProto::Protocol *pbProto, OstProto::Stream *stream);
-
+    virtual void knownFieldHandler(QString name, QString valueHexStr,
+            const QXmlStreamAttributes &attributes, OstProto::Protocol *pbProto);
 protected:
     PdmlSslProtocol();
 };

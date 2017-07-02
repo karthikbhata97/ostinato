@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 #include "ssl.pb.h"
 
+#include <iostream>
+#include <QDebug>
 /*!
  TODO : Initialize the following inherited protected members -
   - ostProtoId_ 
@@ -45,6 +47,8 @@ PdmlSslProtocol::PdmlSslProtocol()
     fieldMap_.insert("ssl.record.content_type", OstProto::Ssl::kTypeFieldNumber);
     fieldMap_.insert("ssl.record.version", OstProto::Ssl::kVersionFieldNumber);
     fieldMap_.insert("ssl.record.length", OstProto::Ssl::kPayloadLengthFieldNumber);
+
+//    fieldMap_.insert("ssl.change_cipher_spec", OstProto::Ssl::kChangeCipherSpecFieldNumber);
 }
 
 PdmlSslProtocol::~PdmlSslProtocol()
@@ -115,4 +119,59 @@ void PdmlSslProtocol::unknownFieldHandler(QString /*name*/,
         OstProto::Protocol* /*pbProto*/, OstProto::Stream* /*stream*/)
 {
     return;
+}
+
+
+void PdmlSslProtocol::knownFieldHandler(QString name, QString valueHexStr,
+        const QXmlStreamAttributes& attributes, OstProto::Protocol *pbProto)
+{
+    QString showname;
+    showname.append("(");
+    showname.append(attributes.value("showname"));
+    showname.append(")");
+    const google::protobuf::Reflection *protoRefl = pbProto->GetReflection();
+    const google::protobuf::FieldDescriptor *extDesc =
+                protoRefl->FindKnownExtensionByNumber(ostProtoId());
+
+    google::protobuf::Message *msg =
+                protoRefl->MutableMessage(pbProto,extDesc);
+
+    const google::protobuf::Reflection *msgRefl = msg->GetReflection();
+    const google::protobuf::FieldDescriptor *fieldDesc =
+                msg->GetDescriptor()->FindFieldByNumber(fieldId(name));
+    const google::protobuf::FieldDescriptor *fieldDescShowName =
+                msg->GetDescriptor()->FindFieldByNumber(fieldId(name) + 1);
+
+
+    bool isOk;
+
+    Q_ASSERT(fieldDesc != NULL);
+    switch(fieldDesc->cpp_type())
+    {
+    case google::protobuf::FieldDescriptor::CPPTYPE_BOOL:
+        msgRefl->SetBool(msg, fieldDesc, bool(valueHexStr.toUInt(&isOk)));
+        break;
+    case google::protobuf::FieldDescriptor::CPPTYPE_ENUM: // TODO
+    case google::protobuf::FieldDescriptor::CPPTYPE_UINT32:
+        msgRefl->SetUInt32(msg, fieldDesc,
+                valueHexStr.toUInt(&isOk, kBaseHex));
+        break;
+    case google::protobuf::FieldDescriptor::CPPTYPE_UINT64:
+        msgRefl->SetUInt64(msg, fieldDesc,
+                valueHexStr.toULongLong(&isOk, kBaseHex));
+        break;
+    case google::protobuf::FieldDescriptor::CPPTYPE_STRING:
+    {
+        QByteArray hexVal = QByteArray::fromHex(valueHexStr.toUtf8());
+        std::string str(hexVal.constData(), hexVal.size());
+        msgRefl->SetString(msg, fieldDesc, str);
+        break;
+    }
+    default:
+        qDebug("%s: unhandled cpptype = %d", __FUNCTION__,
+                fieldDesc->cpp_type());
+    }
+    QByteArray hexVal = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
+    std::string str(hexVal.constData(), hexVal.size());
+    msgRefl->SetString(msg, fieldDescShowName, str);
 }

@@ -165,7 +165,7 @@ void PdmlProtocol::fieldHandler(QString name,
                 name.toAscii().constData(), 
                 valueHexStr.toAscii().constData());
 
-        knownFieldHandler(name, valueHexStr, pbProto);
+        knownFieldHandler(name, valueHexStr, attributes, pbProto);
     }
     else
     {
@@ -191,7 +191,7 @@ void PdmlProtocol::fieldHandler(QString name,
  valueHexStr as per the field's datatype
 */
 void PdmlProtocol::knownFieldHandler(QString name, QString valueHexStr,
-        OstProto::Protocol *pbProto)
+        const QXmlStreamAttributes& /*attributes*/, OstProto::Protocol *pbProto)
 {
     const google::protobuf::Reflection *protoRefl = pbProto->GetReflection();
     const google::protobuf::FieldDescriptor *extDesc = 

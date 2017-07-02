@@ -42,6 +42,8 @@ public:
         ssl_version,
         ssl_payloadLength,
 
+//        ssl_ccs,
+
         ssl_fieldCount
     };
 
