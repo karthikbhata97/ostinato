@@ -114,10 +114,27 @@ void PdmlSslProtocol::postProtocolHandler(OstProto::Protocol* /*pbProto*/,
  If the PDML protocol contains some fields that are not supported by Ostinato,
  use a HexDump protocol as a replacement to store these bytes
 */
-void PdmlSslProtocol::unknownFieldHandler(QString /*name*/, 
-        int /*pos*/, int /*size*/, const QXmlStreamAttributes& /*attributes*/, 
-        OstProto::Protocol* /*pbProto*/, OstProto::Stream* /*stream*/)
+void PdmlSslProtocol::unknownFieldHandler(QString name,
+        int /*pos*/, int /*size*/, const QXmlStreamAttributes& attributes,
+        OstProto::Protocol* pbProto, OstProto::Stream* /*stream*/)
 {
+    if(!attributes.value("showname").isEmpty())
+    {
+    }
+        QString showname;
+        showname.append("(");
+        showname.append(attributes.value("showname"));
+        showname.append(")");
+        QByteArray byteArrayShowName = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
+        std::string strShowName(byteArrayShowName.constData(), byteArrayShowName.size());
+
+    if(name=="ssl.change_cipher_spec")
+    {
+        OstProto::Ssl *ssl = pbProto->MutableExtension(OstProto::ssl);
+        OstProto::Ssl::ChangeCipherSpec  *ccs = ssl->mutable_change_cipher_spec();
+        ccs->set_ccs(1);
+        ccs->set_ccs_showname(strShowName);
+    }
     return;
 }
 

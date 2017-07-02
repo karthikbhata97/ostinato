@@ -141,6 +141,14 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         case ssl_payloadLength:
             break;
 
+        case ssl_ccs:
+            if(!data.has_change_cipher_spec())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+            break;
+
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
@@ -238,6 +246,35 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             }
             break;
         }
+
+
+    case ssl_ccs:
+    {
+        if(!data.has_change_cipher_spec())
+            break;
+        int ccs = data.change_cipher_spec().ccs() & 0xFF;
+        switch(attrib)
+        {
+            case FieldName:
+                return QString("Change Cipher Spec");
+            case FieldValue:
+                return ccs;
+            case FieldFrameValue:
+            {
+                QByteArray fv;
+                fv.resize(1);
+                qToBigEndian((quint8) ccs, (uchar*) fv.data());
+                return fv;
+            }
+            case FieldTextValue:
+                return QString("%1").arg(ccs);
+            case FieldBitSize:
+                return 8;
+            default:
+                break;
+        }
+        break;
+    }
         // Meta fields
 
         default:

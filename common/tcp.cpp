@@ -420,11 +420,17 @@ QVariant TcpProtocol::fieldData(int index, FieldAttrib attrib,
         // Meta fields
         case tcp_is_override_src_port:
         {
+        qDebug("funny");
+        qDebug("%d", attrib);
+        qDebug("funny");
             switch(attrib)
             {
                 case FieldValue:
                     return data.is_override_src_port();
                 default:
+                qDebug("funny");
+                qDebug("%d", attrib);
+                qDebug("funny");
                     break;
             }
             break;
