@@ -76,10 +76,10 @@ message Ssl {
             optional string ciphersuites_length_showname = 16;
             repeated bytes ciphersuite = 17;
             repeated string ciphersuite_showname = 18;
-            optional uint32 compression_methods_length = 19;
-            optional string compression_methods_length_showname = 20;
-            repeated uint32 compression_method = 21;
-            repeated string compression_method_showname = 22;
+            optional uint32 comp_methods_length = 19;
+            optional string comp_methods_length_showname = 20;
+            repeated uint32 comp_method = 21;
+            repeated string comp_method_showname = 22;
             optional uint32 extensions_length = 23;
             optional string extensions_length_showname = 24;
             repeated Extention extention = 25;

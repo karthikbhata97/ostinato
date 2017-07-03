@@ -57,6 +57,8 @@ PdmlSslProtocol::PdmlSslProtocol()
     fieldMap_.insert("ssl.handshake.type", OstProto::Ssl::Handshake::kTypeFieldNumber);
     fieldMap_.insert("ssl.handshake.version", OstProto::Ssl::Handshake::kVersionFieldNumber);
     fieldMap_.insert("ssl.handshake.length", OstProto::Ssl::Handshake::kLengthFieldNumber);
+    fieldMap_.insert("ssl.handshake.comp_methods_length", OstProto::Ssl::Handshake::kCompMethodsLengthFieldNumber);
+    fieldMap_.insert("ssl.handshake.extensions_length", OstProto::Ssl::Handshake::kExtensionsLengthFieldNumber);
 }
 
 PdmlSslProtocol::~PdmlSslProtocol()

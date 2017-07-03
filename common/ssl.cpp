@@ -149,14 +149,14 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
             }
             break;
         case ssl_handshake_type:
-            if(!data.has_handshake() || !data.handshake().has_type())
+            if(!data.handshake().has_type())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
             break;
         case ssl_handshake_length:
-            if(!data.has_handshake() || !data.handshake().has_length())
+            if(!data.handshake().has_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
@@ -164,40 +164,54 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         break;
 
         case ssl_handshake_version:
-            if(!data.has_handshake() || !data.handshake().has_version())
+            if(!data.handshake().has_version())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
 
-    case ssl_handshake_random:
+        case ssl_handshake_random:
             if(!(data.handshake().has_random() || data.handshake().has_random_time()))
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
-    case ssl_handshake_sessionIdLen:
+        case ssl_handshake_sessionIdLen:
             if(!data.handshake().has_session_id_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
-    case ssl_handshake_sessionId:
+        case ssl_handshake_sessionId:
             if(!data.handshake().has_session_id())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
-    case ssl_handshake_ciphersuitesLen:
-        if(!data.handshake().has_ciphersuites_length())
-        {
-            flags &= ~FrameField;
-            flags |= MetaField;
-        }
+        case ssl_handshake_ciphersuitesLen:
+            if(!data.handshake().has_ciphersuites_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+        case ssl_handshake_compMethodsLen:
+            if(!data.handshake().has_comp_methods_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+        case ssl_handshake_extensionsLen:
+            if(!data.handshake().has_extensions_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
         break;
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
@@ -482,6 +496,60 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             {
                 case FieldName:
                     return QString("Ciphersuites Length");
+                case FieldValue:
+                    return length;
+                case FieldTextValue:
+                    return QString("%1").arg(length);
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    fv.resize(2);
+                    qToBigEndian((quint16) length, (uchar*) fv.data());
+                    return fv;
+                }
+                case FieldBitSize:
+                    return 16;
+                default:
+                    break;
+            }
+            break;
+        }
+
+        case ssl_handshake_compMethodsLen:
+        {
+            int length = data.handshake().comp_methods_length() & 0xFF;
+
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString("Compression Methods Length");
+                case FieldValue:
+                    return length;
+                case FieldTextValue:
+                    return QString("%1").arg(length);
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    fv.resize(1);
+                    qToBigEndian((quint8) length, (uchar*) fv.data());
+                    return fv;
+                }
+                case FieldBitSize:
+                    return 8;
+                default:
+                    break;
+            }
+            break;
+        }
+
+        case ssl_handshake_extensionsLen:
+        {
+            int length = data.handshake().extensions_length() & 0xFFFF;
+
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString("Extensions Length");
                 case FieldValue:
                     return length;
                 case FieldTextValue:
