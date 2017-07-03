@@ -34,3 +34,6 @@ pkg_info.json
 # ctags/cscope
 tags
 cscope.out
+
+# user file
+*.user
