@@ -221,6 +221,15 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
         ssl->set_handshake_showname(strShowName);
     }
 
+    else if(name=="ssl.app_data")
+    {
+        OstProto::Ssl::ApplicationData *data = ssl->mutable_app_data();
+        QByteArray dataArray = QByteArray::fromHex(attributes.value("value").toLatin1());
+        std::string strData(dataArray.constData(), dataArray.size());
+        data->set_data(strData);
+        data->set_data_showname(strShowName);
+    }
+
     return;
 }
 

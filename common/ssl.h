@@ -57,6 +57,8 @@ public:
         ssl_handshake_keyLen,
         ssl_handshake_key,
 
+        ssl_appData,
+
         ssl_fieldCount
     };
 

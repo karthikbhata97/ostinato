@@ -236,6 +236,14 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
         break;
+        case ssl_appData:
+            if(!data.app_data().has_data())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
@@ -659,6 +667,26 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 return key.toHex();
             case FieldFrameValue:
                 return key;
+            default:
+                break;
+            }
+            break;
+        }
+
+        case ssl_appData:
+        {
+            QByteArray appData;
+            appData.append(QString().fromStdString(data.app_data().data()));
+            qDebug() << QString(appData);
+            switch (attrib) {
+            case FieldName:
+                return QString("Application Data");
+            case FieldValue:
+                return appData;
+            case FieldTextValue:
+                return appData.toHex();
+            case FieldFrameValue:
+                return appData;
             default:
                 break;
             }

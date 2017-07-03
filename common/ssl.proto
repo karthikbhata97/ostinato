@@ -157,8 +157,8 @@ message Ssl {
             optional string alert_showname = 10;
             optional ChangeCipherSpec change_cipher_spec = 11;
             optional string change_cipher_spec_showname = 12;
-            optional ApplicationData application_data = 13;
-            optional string application_data_showname = 14;
+            optional ApplicationData app_data = 13;
+            optional string app_data_showname = 14;
 }
 
 
