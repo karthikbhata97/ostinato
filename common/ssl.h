@@ -50,6 +50,7 @@ public:
         ssl_handshake_random,
         ssl_handshake_sessionIdLen,
         ssl_handshake_sessionId,
+        ssl_handshake_ciphersuitesLen,
 
         ssl_fieldCount
     };

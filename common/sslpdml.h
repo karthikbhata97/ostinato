@@ -42,6 +42,8 @@ public:
             OstProto::Protocol *pbProto, OstProto::Stream *stream);
     virtual void knownFieldHandler(QString name, QString valueHexStr,
             const QXmlStreamAttributes &attributes, OstProto::Protocol *pbProto);
+    void handshakeHandler(QString name, QString valueHexStr,
+            const QXmlStreamAttributes &attributes, OstProto::Protocol *pbProto);
 protected:
     PdmlSslProtocol();
 };

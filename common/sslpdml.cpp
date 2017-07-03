@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 #include <iostream>
 #include <QDebug>
+#include <QStringList>
 /*!
  TODO : Initialize the following inherited protected members -
   - ostProtoId_ 
@@ -48,7 +49,14 @@ PdmlSslProtocol::PdmlSslProtocol()
     fieldMap_.insert("ssl.record.version", OstProto::Ssl::kVersionFieldNumber);
     fieldMap_.insert("ssl.record.length", OstProto::Ssl::kPayloadLengthFieldNumber);
 
-//    fieldMap_.insert("ssl.change_cipher_spec", OstProto::Ssl::kChangeCipherSpecFieldNumber);
+    fieldMap_.insert("ssl.handshake.cipher_suites_length", OstProto::Ssl::Handshake::kCiphersuitesLengthFieldNumber);
+    fieldMap_.insert("ssl.handshake.random", OstProto::Ssl::Handshake::kRandomFieldNumber);
+    fieldMap_.insert("ssl.handshake.random_time", OstProto::Ssl::Handshake::kRandomTimeFieldNumber);
+    fieldMap_.insert("ssl.handshake.session_id", OstProto::Ssl::Handshake::kSessionIdFieldNumber);
+    fieldMap_.insert("ssl.handshake.session_id_length", OstProto::Ssl::Handshake::kSessionIdLengthFieldNumber);
+    fieldMap_.insert("ssl.handshake.type", OstProto::Ssl::Handshake::kTypeFieldNumber);
+    fieldMap_.insert("ssl.handshake.version", OstProto::Ssl::Handshake::kVersionFieldNumber);
+    fieldMap_.insert("ssl.handshake.length", OstProto::Ssl::Handshake::kLengthFieldNumber);
 }
 
 PdmlSslProtocol::~PdmlSslProtocol()
@@ -102,53 +110,67 @@ void PdmlSslProtocol::postProtocolHandler(OstProto::Protocol* /*pbProto*/,
 void PdmlSslProtocol::knownFieldHandler(QString name, QString valueHexStr,
         const QXmlStreamAttributes& attributes, OstProto::Protocol *pbProto)
 {
-    QString showname;
-    showname.append(attributes.value("showname"));
-    const google::protobuf::Reflection *protoRefl = pbProto->GetReflection();
-    const google::protobuf::FieldDescriptor *extDesc =
-                protoRefl->FindKnownExtensionByNumber(ostProtoId());
-
-    google::protobuf::Message *msg =
-                protoRefl->MutableMessage(pbProto,extDesc);
-
-    const google::protobuf::Reflection *msgRefl = msg->GetReflection();
-    const google::protobuf::FieldDescriptor *fieldDesc =
-                msg->GetDescriptor()->FindFieldByNumber(fieldId(name));
-    const google::protobuf::FieldDescriptor *fieldDescShowName =
-                msg->GetDescriptor()->FindFieldByNumber(fieldId(name) + 1);
-
-
-    bool isOk;
-
-    Q_ASSERT(fieldDesc != NULL);
-    switch(fieldDesc->cpp_type())
+    if(name.split('.')[1]=="handshake")
     {
-    case google::protobuf::FieldDescriptor::CPPTYPE_BOOL:
-        msgRefl->SetBool(msg, fieldDesc, bool(valueHexStr.toUInt(&isOk)));
-        break;
-    case google::protobuf::FieldDescriptor::CPPTYPE_ENUM: // TODO
-    case google::protobuf::FieldDescriptor::CPPTYPE_UINT32:
-        msgRefl->SetUInt32(msg, fieldDesc,
-                valueHexStr.toUInt(&isOk, kBaseHex));
-        break;
-    case google::protobuf::FieldDescriptor::CPPTYPE_UINT64:
-        msgRefl->SetUInt64(msg, fieldDesc,
-                valueHexStr.toULongLong(&isOk, kBaseHex));
-        break;
-    case google::protobuf::FieldDescriptor::CPPTYPE_STRING:
+        handshakeHandler(name, valueHexStr, attributes, pbProto);
+    }
+
+    else
     {
-        QByteArray hexVal = QByteArray::fromHex(valueHexStr.toUtf8());
+        QString showname;
+        showname.append(attributes.value("showname"));
+        const google::protobuf::Reflection *protoRefl = pbProto->GetReflection();
+
+        const google::protobuf::FieldDescriptor *extDesc =
+                    protoRefl->FindKnownExtensionByNumber(ostProtoId());
+
+        google::protobuf::Message *msg =
+                    protoRefl->MutableMessage(pbProto,extDesc);
+
+        const google::protobuf::Reflection *msgRefl = msg->GetReflection();
+
+        const google::protobuf::FieldDescriptor *fieldDesc =
+                    msg->GetDescriptor()->FindFieldByNumber(fieldId(name));
+
+        const google::protobuf::FieldDescriptor *fieldDescShowName =
+                    msg->GetDescriptor()->FindFieldByNumber(fieldId(name) + 1);
+
+
+        bool isOk;
+
+        Q_ASSERT(fieldDesc != NULL);
+
+        switch(fieldDesc->cpp_type())
+        {
+        case google::protobuf::FieldDescriptor::CPPTYPE_BOOL:
+            msgRefl->SetBool(msg, fieldDesc, bool(valueHexStr.toUInt(&isOk)));
+            break;
+        case google::protobuf::FieldDescriptor::CPPTYPE_ENUM: // TODO
+        case google::protobuf::FieldDescriptor::CPPTYPE_UINT32:
+            msgRefl->SetUInt32(msg, fieldDesc,
+                    valueHexStr.toUInt(&isOk, kBaseHex));
+            break;
+        case google::protobuf::FieldDescriptor::CPPTYPE_UINT64:
+            msgRefl->SetUInt64(msg, fieldDesc,
+                    valueHexStr.toULongLong(&isOk, kBaseHex));
+            break;
+        case google::protobuf::FieldDescriptor::CPPTYPE_STRING:
+        {
+            QByteArray hexVal = QByteArray::fromHex(valueHexStr.toUtf8());
+            std::string str(hexVal.constData(), hexVal.size());
+            msgRefl->SetString(msg, fieldDesc, str);
+            break;
+        }
+        default:
+            qDebug("%s: unhandled cpptype = %d", __FUNCTION__,
+                    fieldDesc->cpp_type());
+        }
+
+        QByteArray hexVal = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
         std::string str(hexVal.constData(), hexVal.size());
-        msgRefl->SetString(msg, fieldDesc, str);
-        break;
+        msgRefl->SetString(msg, fieldDescShowName, str);
     }
-    default:
-        qDebug("%s: unhandled cpptype = %d", __FUNCTION__,
-                fieldDesc->cpp_type());
-    }
-    QByteArray hexVal = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
-    std::string str(hexVal.constData(), hexVal.size());
-    msgRefl->SetString(msg, fieldDescShowName, str);
+
 }
 
 /*!
@@ -172,7 +194,7 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
 {
     std::string  strShowName;
     OstProto::Ssl *ssl = pbProto->MutableExtension(OstProto::ssl);
-    bool isOk;
+//    bool isOk;
 
     if(!attributes.value("showname").isEmpty())
     {
@@ -194,59 +216,55 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
         ssl->set_handshake_showname(strShowName);
     }
 
-    else if(name=="ssl.handshake.type")
-    {
-        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
-        handshake->set_type(attributes.value("value").toString().toInt(&isOk, kBaseHex));
-        handshake->set_type_showname(strShowName);
-    }
+    return;
+}
 
-    else if(name=="ssl.handshake.length")
-    {
-        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
-        handshake->set_length(attributes.value("value").toString().toInt(&isOk, kBaseHex));
-        handshake->set_length_showname(strShowName);
-    }
+void PdmlSslProtocol::handshakeHandler(QString name, QString valueHexStr,
+        const QXmlStreamAttributes &attributes, OstProto::Protocol *pbProto)
+{
+    QString showname;
+    showname.append(attributes.value("showname"));
+    bool isOk;
+    OstProto::Ssl *ssl = pbProto->MutableExtension(OstProto::ssl);
 
-    else if(name=="ssl.handshake.version")
-    {
-        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
-        handshake->set_version(attributes.value("value").toString().toInt(&isOk, kBaseHex));
-        handshake->set_version_showname(strShowName);
-    }
+    OstProto::Ssl::Handshake *msg = ssl->mutable_handshake();
 
-    else if(name=="ssl.handshake.random_time")
-    {
-        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
-        QByteArray data = attributes.value("value").toUtf8();
-        std::string strData(data.constData(), data.size());
-        handshake->set_random_time(strData);
-        handshake->set_random_time_showname(strShowName);
-    }
+    const google::protobuf::Reflection *msgRefl = msg->GetReflection();
 
-    else if(name=="ssl.handshake.random")
-    {
-        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
-        QByteArray data = attributes.value("value").toUtf8();
-        std::string strData(data.constData(), data.size());
-        handshake->set_random(strData);
-        handshake->set_random_showname(strShowName);
-    }
+    const google::protobuf::FieldDescriptor *fieldDesc =
+                msg->GetDescriptor()->FindFieldByNumber(fieldId(name));
 
-    else if(name=="ssl.handshake.session_id_length")
-    {
-        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
-        handshake->set_session_id_length(attributes.value("value").toString().toInt(&isOk, kBaseHex));
-        handshake->set_version_showname(strShowName);
-    }
+    const google::protobuf::FieldDescriptor *fieldDescShowName =
+                msg->GetDescriptor()->FindFieldByNumber(fieldId(name) + 1);
 
-    else if(name=="ssl.handshake.session_id")
+    Q_ASSERT(fieldDesc != NULL);
+    switch(fieldDesc->cpp_type())
     {
-        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
-        QByteArray data = attributes.value("value").toUtf8();
-        std::string strData(data.constData(), data.size());
-        handshake->set_session_id(strData);
-        handshake->set_session_id_showname(strShowName);
+        case google::protobuf::FieldDescriptor::CPPTYPE_BOOL:
+            msgRefl->SetBool(msg, fieldDesc, bool(valueHexStr.toUInt(&isOk)));
+            break;
+        case google::protobuf::FieldDescriptor::CPPTYPE_ENUM: // TODO
+        case google::protobuf::FieldDescriptor::CPPTYPE_UINT32:
+            msgRefl->SetUInt32(msg, fieldDesc,
+                    valueHexStr.toUInt(&isOk, kBaseHex));
+            break;
+        case google::protobuf::FieldDescriptor::CPPTYPE_UINT64:
+            msgRefl->SetUInt64(msg, fieldDesc,
+                    valueHexStr.toULongLong(&isOk, kBaseHex));
+            break;
+        case google::protobuf::FieldDescriptor::CPPTYPE_STRING:
+        {
+            QByteArray hexVal = QByteArray::fromHex(valueHexStr.toUtf8());
+            std::string str(hexVal.constData(), hexVal.size());
+            msgRefl->SetString(msg, fieldDesc, str);
+            break;
+        }
+        default:
+            qDebug("%s: unhandled cpptype = %d", __FUNCTION__,
+                    fieldDesc->cpp_type());
     }
+    QByteArray hexVal = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
+    std::string str(hexVal.constData(), hexVal.size());
+    msgRefl->SetString(msg, fieldDescShowName, str);
     return;
 }
