@@ -46,6 +46,10 @@ public:
 
         ssl_handshake_type,
         ssl_handshake_length,
+        ssl_handshake_version,
+        ssl_handshake_random,
+        ssl_handshake_sessionIdLen,
+        ssl_handshake_sessionId,
 
         ssl_fieldCount
     };

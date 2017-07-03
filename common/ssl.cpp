@@ -163,6 +163,35 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
             }
         break;
 
+        case ssl_handshake_version:
+            if(!data.has_handshake() || !data.handshake().has_version())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+
+    case ssl_handshake_random:
+            if(!(data.handshake().has_random() || data.handshake().has_random_time()))
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+    case ssl_handshake_sessionIdLen:
+            if(!data.handshake().has_session_id_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+    case ssl_handshake_sessionId:
+            if(!data.handshake().has_session_id())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
@@ -192,7 +221,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldValue:
                     return type;
                 case FieldTextValue:
-                    return QString("%1 %2").arg(type, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.type_showname().c_str()));
+                    return QString("%1 (%2)").arg(type, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.type_showname().c_str()));
                 case FieldFrameValue:
                 {
                     QByteArray fv;
@@ -219,7 +248,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldValue:
                     return version;
                 case FieldTextValue:
-                    return QString("%1 %2").arg(version, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.version_showname().c_str()));
+                    return QString("%1 (%2)").arg(version, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.version_showname().c_str()));
                 case FieldFrameValue:
                 {
                     QByteArray fv;
@@ -301,7 +330,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             case FieldValue:
                 return type;
             case FieldTextValue:
-                return QString("%1").arg(type, 2, BASE_HEX, QChar('0'));
+                return QString("%1 (%2)").arg(type, 2, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.handshake().type_showname().c_str()));
             case FieldFrameValue:
             {
                 QByteArray fv;
@@ -333,13 +362,8 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             {
                 QByteArray fv;
                 fv.resize(3);
+                // Set 24 bits! Don't use <<
                 qToBigEndian((quint32) length<<8, (uchar*) fv.data());
-                qDebug() << fv.toHex();
-                qDebug() << "here";
-                qDebug() << "here";
-                qDebug() << "here";
-                qDebug() << "here";
-                qDebug() << "here";
                 return fv;
             }
             case FieldBitSize:
@@ -350,6 +374,97 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
         break;
     }
 
+    case ssl_handshake_version  :
+    {
+        int version = data.handshake().version() & 0xFFFF;
+
+        switch(attrib)
+        {
+            case FieldName:
+                return QString("Handshake Version");
+            case FieldValue:
+                return version;
+            case FieldTextValue:
+                return QString("%1 (%2)").arg(version, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.handshake().version_showname().c_str()));
+            case FieldFrameValue:
+            {
+                QByteArray fv;
+                fv.resize(2);
+                qToBigEndian((quint16) version, (uchar*) fv.data());
+                return fv;
+            }
+            case FieldBitSize:
+                return 16;
+            default:
+                break;
+        }
+        break;
+    }
+
+    case ssl_handshake_random:
+    {
+        QByteArray random;
+        random.append(QString().fromStdString(data.handshake().random_time()));
+        random.append(QString().fromStdString(data.handshake().random()));
+        switch (attrib) {
+        case FieldName:
+            return QString("Random");
+        case FieldValue:
+            return random;
+        case FieldTextValue:
+            return QString::fromStdString(data.handshake().random_time_showname()).append(QString("\n")).append(QString::fromStdString(data.handshake().random_showname()));
+        case FieldFrameValue:
+            return random;
+        default:
+            break;
+        }
+        break;
+    }
+
+    case ssl_handshake_sessionIdLen:
+    {
+        int length = data.handshake().session_id_length() & 0xFF;
+
+        switch(attrib)
+        {
+            case FieldName:
+                return QString("Session ID Length");
+            case FieldValue:
+                return length;
+            case FieldTextValue:
+                return QString("%1").arg(length);
+            case FieldFrameValue:
+            {
+                QByteArray fv;
+                fv.resize(1);
+                qToBigEndian((quint8) length, (uchar*) fv.data());
+                return fv;
+            }
+            case FieldBitSize:
+                return 8;
+            default:
+                break;
+        }
+        break;
+    }
+    case ssl_handshake_sessionId:
+    {
+        QByteArray sessionId;
+        sessionId.append(QString().fromStdString(data.handshake().session_id()));
+        switch (attrib) {
+        case FieldName:
+            return QString("Session ID");
+        case FieldValue:
+            return sessionId;
+        case FieldTextValue:
+            return QString::fromStdString(data.handshake().session_id());
+        case FieldFrameValue:
+            return sessionId;
+        default:
+            break;
+        }
+        break;
+    }
         // Meta fields
 
         default:

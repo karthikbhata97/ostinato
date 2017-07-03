@@ -103,9 +103,7 @@ void PdmlSslProtocol::knownFieldHandler(QString name, QString valueHexStr,
         const QXmlStreamAttributes& attributes, OstProto::Protocol *pbProto)
 {
     QString showname;
-    showname.append("(");
     showname.append(attributes.value("showname"));
-    showname.append(")");
     const google::protobuf::Reflection *protoRefl = pbProto->GetReflection();
     const google::protobuf::FieldDescriptor *extDesc =
                 protoRefl->FindKnownExtensionByNumber(ostProtoId());
@@ -179,9 +177,7 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
     if(!attributes.value("showname").isEmpty())
     {
         QString showname;
-        showname.append("(");
         showname.append(attributes.value("showname"));
-        showname.append(")");
         QByteArray byteArrayShowName = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
         strShowName = std::string(byteArrayShowName.constData(), byteArrayShowName.size());
     }
@@ -202,13 +198,55 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
     {
         OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
         handshake->set_type(attributes.value("value").toString().toInt(&isOk, kBaseHex));
+        handshake->set_type_showname(strShowName);
     }
 
     else if(name=="ssl.handshake.length")
     {
         OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
         handshake->set_length(attributes.value("value").toString().toInt(&isOk, kBaseHex));
+        handshake->set_length_showname(strShowName);
     }
 
+    else if(name=="ssl.handshake.version")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        handshake->set_version(attributes.value("value").toString().toInt(&isOk, kBaseHex));
+        handshake->set_version_showname(strShowName);
+    }
+
+    else if(name=="ssl.handshake.random_time")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        QByteArray data = attributes.value("value").toUtf8();
+        std::string strData(data.constData(), data.size());
+        handshake->set_random_time(strData);
+        handshake->set_random_time_showname(strShowName);
+    }
+
+    else if(name=="ssl.handshake.random")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        QByteArray data = attributes.value("value").toUtf8();
+        std::string strData(data.constData(), data.size());
+        handshake->set_random(strData);
+        handshake->set_random_showname(strShowName);
+    }
+
+    else if(name=="ssl.handshake.session_id_length")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        handshake->set_session_id_length(attributes.value("value").toString().toInt(&isOk, kBaseHex));
+        handshake->set_version_showname(strShowName);
+    }
+
+    else if(name=="ssl.handshake.session_id")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        QByteArray data = attributes.value("value").toUtf8();
+        std::string strData(data.constData(), data.size());
+        handshake->set_session_id(strData);
+        handshake->set_session_id_showname(strShowName);
+    }
     return;
 }
