@@ -44,6 +44,9 @@ public:
 
         ssl_ccs,
 
+        ssl_handshake_type,
+        ssl_handshake_length,
+
         ssl_fieldCount
     };
 

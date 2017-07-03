@@ -99,46 +99,6 @@ void PdmlSslProtocol::postProtocolHandler(OstProto::Protocol* /*pbProto*/,
     return;
 }
 
-/*!
- TODO: Handle all 'unknown' fields using this method
-
- You need to typically only handle frame fields or fields actually present
- in the protocol on the wire. So you can safely ignore meta-fields such as
- Good/Bad Checksum. 
- 
- Some fields may not have a 'name' attribute, so cannot be classified as 
- a 'known' field. Use this method to identify such fields using other 
- attributes such as 'show' or 'showname' and populate the corresponding 
- protobuf field. 
-
- If the PDML protocol contains some fields that are not supported by Ostinato,
- use a HexDump protocol as a replacement to store these bytes
-*/
-void PdmlSslProtocol::unknownFieldHandler(QString name,
-        int /*pos*/, int /*size*/, const QXmlStreamAttributes& attributes,
-        OstProto::Protocol* pbProto, OstProto::Stream* /*stream*/)
-{
-    if(!attributes.value("showname").isEmpty())
-    {
-    }
-        QString showname;
-        showname.append("(");
-        showname.append(attributes.value("showname"));
-        showname.append(")");
-        QByteArray byteArrayShowName = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
-        std::string strShowName(byteArrayShowName.constData(), byteArrayShowName.size());
-
-    if(name=="ssl.change_cipher_spec")
-    {
-        OstProto::Ssl *ssl = pbProto->MutableExtension(OstProto::ssl);
-        OstProto::Ssl::ChangeCipherSpec  *ccs = ssl->mutable_change_cipher_spec();
-        ccs->set_ccs(1);
-        ccs->set_ccs_showname(strShowName);
-    }
-    return;
-}
-
-
 void PdmlSslProtocol::knownFieldHandler(QString name, QString valueHexStr,
         const QXmlStreamAttributes& attributes, OstProto::Protocol *pbProto)
 {
@@ -191,4 +151,64 @@ void PdmlSslProtocol::knownFieldHandler(QString name, QString valueHexStr,
     QByteArray hexVal = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
     std::string str(hexVal.constData(), hexVal.size());
     msgRefl->SetString(msg, fieldDescShowName, str);
+}
+
+/*!
+ TODO: Handle all 'unknown' fields using this method
+
+ You need to typically only handle frame fields or fields actually present
+ in the protocol on the wire. So you can safely ignore meta-fields such as
+ Good/Bad Checksum.
+
+ Some fields may not have a 'name' attribute, so cannot be classified as
+ a 'known' field. Use this method to identify such fields using other
+ attributes such as 'show' or 'showname' and populate the corresponding
+ protobuf field.
+
+ If the PDML protocol contains some fields that are not supported by Ostinato,
+ use a HexDump protocol as a replacement to store these bytes
+*/
+void PdmlSslProtocol::unknownFieldHandler(QString name,
+        int /*pos*/, int /*size*/, const QXmlStreamAttributes& attributes,
+        OstProto::Protocol* pbProto, OstProto::Stream* /*stream*/)
+{
+    std::string  strShowName;
+    OstProto::Ssl *ssl = pbProto->MutableExtension(OstProto::ssl);
+    bool isOk;
+
+    if(!attributes.value("showname").isEmpty())
+    {
+        QString showname;
+        showname.append("(");
+        showname.append(attributes.value("showname"));
+        showname.append(")");
+        QByteArray byteArrayShowName = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
+        strShowName = std::string(byteArrayShowName.constData(), byteArrayShowName.size());
+    }
+
+    if(name=="ssl.change_cipher_spec")
+    {
+        OstProto::Ssl::ChangeCipherSpec  *ccs = ssl->mutable_change_cipher_spec();
+        ccs->set_ccs(1);
+        ccs->set_ccs_showname(strShowName);
+    }
+
+    else if(name=="ssl.handshake")
+    {
+        ssl->set_handshake_showname(strShowName);
+    }
+
+    else if(name=="ssl.handshake.type")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        handshake->set_type(attributes.value("value").toString().toInt(&isOk, kBaseHex));
+    }
+
+    else if(name=="ssl.handshake.length")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        handshake->set_length(attributes.value("value").toString().toInt(&isOk, kBaseHex));
+    }
+
+    return;
 }

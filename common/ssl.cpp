@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 #include "ssl.h"
 #include <iostream>
-
+#include <QDebug>
 SslProtocol::SslProtocol(StreamBase *stream, AbstractProtocol *parent)
     : AbstractProtocol(stream, parent)
 {
@@ -148,6 +148,20 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
             break;
+        case ssl_handshake_type:
+            if(!data.has_handshake() || !data.handshake().has_type())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+            break;
+        case ssl_handshake_length:
+            if(!data.has_handshake() || !data.handshake().has_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
 
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
@@ -275,6 +289,67 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
         }
         break;
     }
+
+    case ssl_handshake_type:
+    {
+        int type = data.handshake().type() & 0xFF;
+
+        switch(attrib)
+        {
+            case FieldName:
+                return QString("Handshake Type");
+            case FieldValue:
+                return type;
+            case FieldTextValue:
+                return QString("%1").arg(type, 2, BASE_HEX, QChar('0'));
+            case FieldFrameValue:
+            {
+                QByteArray fv;
+                fv.resize(1);
+                qToBigEndian((quint8) type, (uchar*) fv.data());
+                return fv;
+            }
+            case FieldBitSize:
+                return 8;
+            default:
+                break;
+        }
+        break;
+    }
+
+    case ssl_handshake_length:
+    {
+        int length = data.handshake().length() & 0xFFFFFF;
+
+        switch(attrib)
+        {
+            case FieldName:
+                return QString("Handshake Length");
+            case FieldValue:
+                return length;
+            case FieldTextValue:
+                return QString("%1").arg(length);
+            case FieldFrameValue:
+            {
+                QByteArray fv;
+                fv.resize(3);
+                qToBigEndian((quint32) length<<8, (uchar*) fv.data());
+                qDebug() << fv.toHex();
+                qDebug() << "here";
+                qDebug() << "here";
+                qDebug() << "here";
+                qDebug() << "here";
+                qDebug() << "here";
+                return fv;
+            }
+            case FieldBitSize:
+                return 24;
+            default:
+                break;
+        }
+        break;
+    }
+
         // Meta fields
 
         default:
