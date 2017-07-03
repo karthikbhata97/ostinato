@@ -20,6 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "ssl.h"
 #include <iostream>
 #include <QDebug>
+#include <QStringList>
+
 SslProtocol::SslProtocol(StreamBase *stream, AbstractProtocol *parent)
     : AbstractProtocol(stream, parent)
 {
@@ -208,6 +210,27 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         break;
         case ssl_handshake_extensionsLen:
             if(!data.handshake().has_extensions_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+        case ssl_handshake_certificatesLen:
+            if(!data.handshake().has_certificates_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+        case ssl_handshake_keyLen:
+            if(!data.handshake().has_key_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+        case ssl_handshake_key:
+            if(!data.handshake().has_key())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
@@ -479,7 +502,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             case FieldValue:
                 return sessionId;
             case FieldTextValue:
-                return QString::fromStdString(data.handshake().session_id());
+                return sessionId.toHex();
             case FieldFrameValue:
                 return sessionId;
             default:
@@ -565,6 +588,79 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                     return 16;
                 default:
                     break;
+            }
+            break;
+        }
+
+        case ssl_handshake_certificatesLen:
+        {
+            int length = data.handshake().certificates_length() & 0xFFFFFF;
+
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString("Certificates Length");
+                case FieldValue:
+                    return length;
+                case FieldTextValue:
+                    return QString("%1").arg(length);
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    fv.resize(3);
+                    qToBigEndian((quint32) length<<8, (uchar*) fv.data());
+                    return fv;
+                }
+                case FieldBitSize:
+                    return 24;
+                default:
+                    break;
+            }
+            break;
+        }
+
+        case ssl_handshake_keyLen:
+        {
+            int length = data.handshake().key_length() & 0xFFFF;
+
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString::fromUtf8(data.handshake().key_showname().c_str()).split(':')[0];
+                case FieldValue:
+                    return length;
+                case FieldTextValue:
+                    return QString("%1").arg(length);
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    fv.resize(2);
+                    qToBigEndian((quint16) length, (uchar*) fv.data());
+                    return fv;
+                }
+                case FieldBitSize:
+                    return 16;
+                default:
+                    break;
+            }
+            break;
+        }
+
+        case ssl_handshake_key:
+        {
+            QByteArray key;
+            key.append(QString().fromStdString(data.handshake().key()));
+            switch (attrib) {
+            case FieldName:
+                return QString::fromUtf8(data.handshake().key_showname().c_str()).split(':')[0];
+            case FieldValue:
+                return key;
+            case FieldTextValue:
+                return key.toHex();
+            case FieldFrameValue:
+                return key;
+            default:
+                break;
             }
             break;
         }

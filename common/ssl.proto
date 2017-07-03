@@ -107,8 +107,10 @@ message Ssl {
             optional bytes sighed_hash = 41;
             optional string sighed_hash_showname = 42;
 
-            optional bytes key = 43;
-            optional string key_showname = 44;
+            optional uint32 key_length = 43;
+            optional string key_length_showname = 44;
+            optional bytes key = 45;
+            optional string key_showname = 46;
 
     }
 
