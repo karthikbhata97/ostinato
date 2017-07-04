@@ -59,6 +59,8 @@ public:
 
         ssl_appData,
 
+        ssl_alert_message,
+
         ssl_fieldCount
     };
 

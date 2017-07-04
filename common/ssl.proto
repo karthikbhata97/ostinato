@@ -120,30 +120,8 @@ message Ssl {
     }
 
     message Alert {
-            enum AlertLevel {
-                warning = 1;
-                fatal = 2;
-            }
-
-            enum AlertDescription {
-                close_notify = 1;
-                unexpected_message = 2;
-                bad_record_mac = 3;
-                decompression_failure = 4;
-                handshake_failure = 5;
-                no_certificate = 6;
-                bad_certificate = 7;
-                unsupported_certificate = 8;
-                certificate_revoked = 9;
-                certificate_expired = 10;
-                certificate_unknown = 11;
-                illegal_parameter = 12;
-            }
-
-            optional AlertLevel alert_level = 1;
-            optional string alert_level_showname = 2;
-            optional AlertDescription alert_description = 3;
-            optional string alert_description_showname = 4;
+            optional uint32 alert_message = 1;
+            optional string alert_message_showname = 2;
     }
 
     message ApplicationData {

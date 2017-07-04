@@ -199,7 +199,7 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
 {
     std::string  strShowName;
     OstProto::Ssl *ssl = pbProto->MutableExtension(OstProto::ssl);
-//    bool isOk;
+    bool isOk;
 
     if(!attributes.value("showname").isEmpty())
     {
@@ -228,6 +228,13 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
         std::string strData(dataArray.constData(), dataArray.size());
         data->set_data(strData);
         data->set_data_showname(strShowName);
+    }
+
+    else if(name=="ssl.alert_message")
+    {
+        OstProto::Ssl::Alert *alert = ssl->mutable_alert();
+        alert->set_alert_message(attributes.value("value").toString().toInt(&isOk, kBaseHex));
+        alert->set_alert_message_showname(strShowName);
     }
 
     return;

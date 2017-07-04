@@ -243,6 +243,13 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
         break;
+        case ssl_alert_message:
+        if(!data.alert().has_alert_message())
+        {
+            flags &= ~FrameField;
+            flags |= MetaField;
+        }
+        break;
 
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
@@ -677,7 +684,6 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
         {
             QByteArray appData;
             appData.append(QString().fromStdString(data.app_data().data()));
-            qDebug() << QString(appData);
             switch (attrib) {
             case FieldName:
                 return QString("Application Data");
@@ -693,6 +699,31 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             break;
         }
         // Meta fields
+        case ssl_alert_message:
+        {
+            int alert = data.alert().alert_message();
+            switch (attrib) {
+            case FieldName:
+                return QString("Alert");
+            case FieldValue:
+                return alert;
+            case FieldTextValue:
+                return QString("%1 (%2)").arg(alert).arg(QString::fromUtf8(data.alert().alert_message_showname().c_str()));
+            case FieldFrameValue:
+            {
+                QByteArray fv;
+                fv.resize(2);
+                qToBigEndian((quint16) alert, (uchar*) fv.data());
+                return fv;
+            }
+            case FieldBitSize:
+                return 16;
+            default:
+                break;
+            }
+            break;
+        }
+
 
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
