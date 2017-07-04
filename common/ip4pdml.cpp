@@ -26,7 +26,7 @@ PdmlIp4Protocol::PdmlIp4Protocol()
 {
     ostProtoId_ = OstProto::Protocol::kIp4FieldNumber;
 
-    fieldMap_.insert("ip.version", OstProto::Ip4::kVerHdrlenFieldNumber);
+    fieldMap_.insert("ip.hdr_len", OstProto::Ip4::kVerHdrlenFieldNumber);
     fieldMap_.insert("ip.dsfield", OstProto::Ip4::kTosFieldNumber);
     fieldMap_.insert("ip.len", OstProto::Ip4::kTotlenFieldNumber);
     fieldMap_.insert("ip.id", OstProto::Ip4::kIdFieldNumber);

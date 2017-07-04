@@ -306,7 +306,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldName:            
                     return QString("Content Type");
                 case FieldValue:
-                    return type;
+                    return QString("%1").arg(type, 2, BASE_HEX, QChar('0'));;
                 case FieldTextValue:
                     return QString("%1 (%2)").arg(type, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.type_showname().c_str()));
                 case FieldFrameValue:
@@ -333,7 +333,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldName:            
                     return QString("Version");
                 case FieldValue:
-                    return version;
+                    return QString("%1").arg(version, 4, BASE_HEX, QChar('0'));
                 case FieldTextValue:
                     return QString("%1 (%2)").arg(version, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.version_showname().c_str()));
                 case FieldFrameValue:
@@ -878,9 +878,9 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             case FieldName:
                 return QString("Alert");
             case FieldValue:
-                return alert;
+                return QString("%1").arg(alert, 2, BASE_HEX, QChar('0'));
             case FieldTextValue:
-                return QString("%1 (%2)").arg(alert).arg(QString::fromUtf8(data.alert().alert_message_showname().c_str()));
+                return QString("%1 (%2)").arg(alert, 2, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.alert().alert_message_showname().c_str()));
             case FieldFrameValue:
             {
                 QByteArray fv;
@@ -925,14 +925,14 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
         {
             uint type = value.toUInt(&isOk);
             if (isOk)
-                data.set_type((data.type() & 0x1FFF) | ((type & 0x07) << 13));
+                data.set_type(type);
             break;
         }
         case ssl_version:
         {
             uint version = value.toUInt(&isOk);
             if (isOk)
-                data.set_version((data.version() & 0xe000) | (version & 0x1FFF));
+                data.set_version(version);
             break;
         }
         case ssl_payloadLength:
@@ -942,8 +942,13 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
                 data.set_payload_length(len);
             break;
         }
-
-
+        case ssl_alert_message:
+        {
+            uint alert = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_alert()->set_alert_message(alert);
+            break;
+        }
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);

@@ -42,19 +42,34 @@ See AbstractProtocolConfigForm::loadWidget() for more info
 */
 void SslConfigForm::loadWidget(AbstractProtocol *proto)
 {
+//    bool isOk;
 
-    sslVersion->setText(
+    leSslVersion->setText(
         proto->fieldData(
             SslProtocol::ssl_version,
             AbstractProtocol::FieldValue
         ).toString());
 
-    sslPayloadLength->setText(
+    leSslPayloadLength->setText(
         proto->fieldData(
             SslProtocol::ssl_payloadLength,
             AbstractProtocol::FieldValue
         ).toString());
-
+    leSslType->setText(
+        proto->fieldData(
+                SslProtocol::ssl_type,
+                AbstractProtocol::FieldValue
+        ).toString());
+    leAlertSeverity->setText(
+        proto->fieldData(
+            SslProtocol::ssl_alert_message,
+                AbstractProtocol::FieldValue
+        ).toString().left(2));
+    leAlertDescription->setText(
+        proto->fieldData(
+            SslProtocol::ssl_alert_message,
+                AbstractProtocol::FieldValue
+        ).toString().right(2));
 
 }
 
@@ -65,15 +80,22 @@ See AbstractProtocolConfigForm::storeWidget() for more info
 */
 void SslConfigForm::storeWidget(AbstractProtocol *proto)
 {
-
+    bool isOk;
     proto->setFieldData(
         SslProtocol::ssl_version,
-        sslVersion->text());
+        leSslVersion->text().toInt(&isOk, 16));
 
     proto->setFieldData(
         SslProtocol::ssl_payloadLength,
-        sslPayloadLength->text());
+        leSslPayloadLength->text());
 
+    proto->setFieldData(
+        SslProtocol::ssl_type,
+        leSslType->text().toInt(&isOk, 16));
 
+    proto->setFieldData(
+        SslProtocol::ssl_alert_message,
+        (leAlertSeverity->text().toInt(&isOk, 16) << 8) |
+        (leAlertDescription->text().toInt(&isOk, 16) & 0xFF));
 }
 
