@@ -250,6 +250,13 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
         break;
+        case ssl_handshake_extension:
+            if(!data.handshake().extension_size())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
         case ssl_appData:
             if(!data.app_data().has_data())
             {
@@ -768,6 +775,38 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 }
                 case FieldBitSize:
                     return data.handshake().comp_method_size() * 8;
+                default:
+                    break;
+            }
+            break;
+        }
+
+        case ssl_handshake_extension:
+        {
+            switch (attrib) {
+                case FieldName:
+                    return QString("Extentions: ");
+                case FieldValue:
+                    return "todo";
+                case FieldTextValue:
+                {
+                    QString list;
+                    for (int i=0; i < data.handshake().extension_size(); i++)
+                    {
+                        list.append("\n   ");
+                        list.append(data.handshake().extension_showname(i).c_str());
+                    }
+                    return list;
+                }
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    for (int i=0; i < data.handshake().extension_size(); i++)
+                    {
+                        fv.append(QString().fromStdString(data.handshake().extension(i)));
+                    }
+                    return fv;
+                }
                 default:
                     break;
             }

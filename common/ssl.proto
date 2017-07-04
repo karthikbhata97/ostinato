@@ -23,13 +23,6 @@ package OstProto;
 
 // Ssl Protocol
 
-message Extention {
-        optional uint32 length = 1;
-        optional string length_showname = 2;
-        optional bytes extention = 3;
-        optional string extention_showname = 4;
-}
-
 message Certificate {
         optional uint32 length = 1;
         optional string length_showname = 2;
@@ -82,8 +75,8 @@ message Ssl {
             repeated string comp_method_showname = 22;
             optional uint32 extensions_length = 23;
             optional string extensions_length_showname = 24;
-            repeated Extention extention = 25;
-            repeated string extention_showname = 26;
+            repeated bytes extension = 25;
+            repeated string extension_showname = 26;
 
 
             optional uint32 certificates_length = 27;

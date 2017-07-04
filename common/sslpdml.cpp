@@ -251,6 +251,29 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
         handshake->add_comp_method_showname(strShowName);
     }
 
+    else if(name=="" && attributes.value("show").toString().startsWith("Extension"))
+    {
+        QString showname;
+        showname.append(attributes.value("show"));
+        QByteArray byteArrayShowName = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
+        strShowName = std::string(byteArrayShowName.constData(), byteArrayShowName.size());
+
+        QByteArray dataArray = QByteArray::fromHex(attributes.value("value").toLatin1());
+        std::string strData(dataArray.constData(), dataArray.size());
+
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        handshake->add_extension(strData);
+        handshake->add_extension_showname(strShowName);
+
+        qDebug("Hello");
+        qDebug("Hello");
+        qDebug("Hello");
+        qDebug() << showname;
+        qDebug("Hello");
+        qDebug("Hello");
+        qDebug("Hello");
+    }
+
     return;
 }
 
