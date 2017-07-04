@@ -271,6 +271,13 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
             flags |= MetaField;
         }
         break;
+        case ssl_handshake_certificate:
+        if(!data.handshake().certificate_size())
+        {
+            flags &= ~FrameField;
+            flags |= MetaField;
+        }
+        break;
 
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
@@ -813,6 +820,37 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             break;
         }
 
+        case ssl_handshake_certificate:
+        {
+            switch (attrib) {
+                case FieldName:
+                    return QString("Certificates");
+                case FieldValue:
+                    return "todo";
+                case FieldTextValue:
+                {
+                    QString list;
+                    for (int i=0; i < data.handshake().certificate_size(); i++)
+                    {
+                        list.append("\n   ");
+                        list.append(data.handshake().certificate_showname(i).c_str());
+                    }
+                    return list;
+                }
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    for (int i=0; i < data.handshake().certificate_size(); i++)
+                    {
+                        fv.append(QString().fromStdString(data.handshake().certificate(i)));
+                    }
+                    return fv;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
 
         case ssl_appData:
         {

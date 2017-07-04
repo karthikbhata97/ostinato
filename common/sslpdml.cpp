@@ -264,14 +264,15 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
         OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
         handshake->add_extension(strData);
         handshake->add_extension_showname(strShowName);
+    }
 
-        qDebug("Hello");
-        qDebug("Hello");
-        qDebug("Hello");
-        qDebug() << showname;
-        qDebug("Hello");
-        qDebug("Hello");
-        qDebug("Hello");
+    else if(name=="ssl.handshake.certificate")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        QByteArray dataArray = QByteArray::fromHex(attributes.value("value").toLatin1());
+        std::string strData(dataArray.constData(), dataArray.size());
+        handshake->add_certificate(strData);
+        handshake->add_certificate_showname(strShowName);
     }
 
     return;
