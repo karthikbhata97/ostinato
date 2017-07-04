@@ -243,6 +243,13 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
         break;
+        case ssl_handshake_compMethod:
+            if(!data.handshake().comp_method_size())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
         case ssl_appData:
             if(!data.app_data().has_data())
             {
@@ -727,6 +734,46 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             }
             break;
         }
+
+        case ssl_handshake_compMethod:
+        {
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString("Compression Methods");
+                case FieldValue:
+                    return "TODO"; // todo
+                case FieldTextValue:
+                {
+                    QString list;
+                    for (int i=0; i < data.handshake().comp_method_size(); i++)
+                    {
+                        list.append("\n   ");
+                        list.append(QString::fromUtf8(data.handshake().comp_method_showname(i).c_str()));
+                    }
+                    return list;
+                }
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    for (int i=0; i < data.handshake().comp_method_size(); i++)
+                    {
+                        int compMethod = data.handshake().comp_method(i) & 0xFF;
+                        QByteArray rv;
+                        rv.resize(1);
+                        qToBigEndian((quint8) compMethod, (uchar*) rv.data());
+                        fv.append(rv);
+                    }
+                    return fv;
+                }
+                case FieldBitSize:
+                    return data.handshake().comp_method_size() * 8;
+                default:
+                    break;
+            }
+            break;
+        }
+
 
         case ssl_appData:
         {

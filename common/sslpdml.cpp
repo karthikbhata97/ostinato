@@ -244,6 +244,13 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
         handshake->add_ciphersuite_showname(strShowName);
     }
 
+    else if(name=="ssl.handshake.comp_method")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        handshake->add_comp_method(attributes.value("value").toString().toInt(&isOk, kBaseHex));
+        handshake->add_comp_method_showname(strShowName);
+    }
+
     return;
 }
 

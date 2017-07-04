@@ -53,6 +53,7 @@ public:
         ssl_handshake_ciphersuitesLen,
         ssl_handshake_ciphersuite,
         ssl_handshake_compMethodsLen,
+        ssl_handshake_compMethod,
         ssl_handshake_extensionsLen,
         ssl_handshake_certificatesLen,
         ssl_handshake_keyLen,
