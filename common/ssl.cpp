@@ -236,6 +236,13 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
         break;
+        case ssl_handshake_ciphersuite:
+            if(!data.handshake().ciphersuite_size())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
         case ssl_appData:
             if(!data.app_data().has_data())
             {
@@ -680,6 +687,47 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             break;
         }
 
+        case ssl_handshake_ciphersuite :
+        {
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString("Cipher Suites");
+                case FieldValue:
+                    return "TODO"; // todo
+                case FieldTextValue:
+                {
+                    QString list;
+                    for (int i=0; i < data.handshake().ciphersuite_size(); i++)
+                    {
+                        list.append("\n   ");
+                        list.append(QString::fromUtf8(data.handshake().ciphersuite_showname(i).c_str()));
+                    }
+                    return list;
+                }
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    for (int i=0; i < data.handshake().ciphersuite_size(); i++)
+                    {
+                        int ciphersuite = data.handshake().ciphersuite(i) & 0xFFFF;
+                        QByteArray rv;
+                        rv.resize(2);
+                        qToBigEndian((quint16) ciphersuite, (uchar*) rv.data());
+                        fv.append(rv);
+                    }
+                    qDebug() << fv.size() * 8;
+                    qDebug() << data.handshake().ciphersuite_size() * 8;
+                    return fv;
+                }
+                case FieldBitSize:
+                    return data.handshake().ciphersuite_size() * 2 * 8;
+                default:
+                    break;
+            }
+            break;
+        }
+
         case ssl_appData:
         {
             QByteArray appData;
@@ -698,7 +746,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             }
             break;
         }
-        // Meta fields
+
         case ssl_alert_message:
         {
             int alert = data.alert().alert_message();

@@ -74,7 +74,7 @@ message Ssl {
             optional string session_id_showname = 14;
             optional uint32 ciphersuites_length = 15;
             optional string ciphersuites_length_showname = 16;
-            repeated bytes ciphersuite = 17;
+            repeated uint32 ciphersuite = 17;
             repeated string ciphersuite_showname = 18;
             optional uint32 comp_methods_length = 19;
             optional string comp_methods_length_showname = 20;
