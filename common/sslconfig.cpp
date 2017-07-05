@@ -55,22 +55,25 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             SslProtocol::ssl_payloadLength,
             AbstractProtocol::FieldValue
         ).toString());
-    leSslType->setText(
-        proto->fieldData(
+
+    cbSslType->setCurrentIndex(
+        getProtocolIndex(
+            proto->fieldData(
                 SslProtocol::ssl_type,
-                AbstractProtocol::FieldValue
-        ).toString());
+                    AbstractProtocol::FieldValue
+        ).toString()));
+
     leAlertSeverity->setText(
         proto->fieldData(
             SslProtocol::ssl_alert_message,
                 AbstractProtocol::FieldValue
         ).toString().left(2));
+
     leAlertDescription->setText(
         proto->fieldData(
             SslProtocol::ssl_alert_message,
                 AbstractProtocol::FieldValue
         ).toString().right(2));
-
 }
 
 /*!
@@ -91,11 +94,51 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
 
     proto->setFieldData(
         SslProtocol::ssl_type,
-        leSslType->text().toInt(&isOk, 16));
+        getProtocolValue(cbSslType->currentIndex()));
 
     proto->setFieldData(
         SslProtocol::ssl_alert_message,
         (leAlertSeverity->text().toInt(&isOk, 16) << 8) |
         (leAlertDescription->text().toInt(&isOk, 16) & 0xFF));
+
 }
 
+int SslConfigForm::getProtocolIndex(QString value)
+{
+    bool isOk;
+    int index = value.toInt(&isOk, 16);
+    switch (index) {
+    case 0x14:
+        return 0;
+    case 0x15:
+        return 1;
+    case 0x16:
+        return 2;
+    case 0x17:
+        return 3;
+    default:
+        qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
+            index);
+        break;
+    }
+    return -1;
+}
+
+int SslConfigForm::getProtocolValue(int index)
+{
+    switch (index) {
+    case 0:
+        return 0x14;
+    case 1:
+        return 0x15;
+    case 2:
+        return 0x16;
+    case 3:
+        return 0x17;
+    default:
+        qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
+            index);
+        break;
+    }
+    return -1;
+}

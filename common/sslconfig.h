@@ -36,6 +36,8 @@ public:
 
     virtual void loadWidget(AbstractProtocol *proto);
     virtual void storeWidget(AbstractProtocol *proto);
+    int getProtocolIndex(QString value);
+    int getProtocolValue(int index);
 
 };
 

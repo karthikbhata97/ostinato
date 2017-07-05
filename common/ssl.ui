@@ -73,23 +73,6 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="0" rowspan="2" colspan="2">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>TYPE</string>
-     </property>
-     <widget class="QLineEdit" name="leSslType">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>113</width>
-        <height>28</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-   </item>
    <item row="2" column="3" rowspan="2" colspan="2">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
@@ -299,6 +282,43 @@
    </item>
    <item row="1" column="4">
     <widget class="QLineEdit" name="leSslVersion"/>
+   </item>
+   <item row="2" column="0" rowspan="2" colspan="2">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>TYPE</string>
+     </property>
+     <widget class="QComboBox" name="cbSslType">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>161</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>Change Cipher Spec</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Alert</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Handshake</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Application Data</string>
+       </property>
+      </item>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>
