@@ -878,9 +878,9 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             case FieldName:
                 return QString("Alert");
             case FieldValue:
-                return QString("%1").arg(alert, 2, BASE_HEX, QChar('0'));
+                return QString("%1").arg(alert, 4, BASE_HEX, QChar('0'));
             case FieldTextValue:
-                return QString("%1 (%2)").arg(alert, 2, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.alert().alert_message_showname().c_str()));
+                return QString("%1 (%2)").arg(alert, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.alert().alert_message_showname().c_str()));
             case FieldFrameValue:
             {
                 QByteArray fv;

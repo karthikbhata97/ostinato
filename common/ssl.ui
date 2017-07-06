@@ -13,315 +13,207 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout">
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="leSslPayloadLength">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="text">
-      <string/>
+  <widget class="QLineEdit" name="leSslPayloadLength">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>311</x>
+     <y>35</y>
+     <width>125</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lbLength">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>35</y>
+     <width>45</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Length</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+   <property name="buddy">
+    <cstring>leSslPayloadLength</cstring>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_24">
+   <property name="geometry">
+    <rect>
+     <x>455</x>
+     <y>35</y>
+     <width>49</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Version</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="leSslVersion">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>35</y>
+     <width>125</width>
+     <height>28</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cbSslType">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>30</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Change Cipher Spec</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Alert</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Handshake</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Application Data</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>29</y>
+     <width>63</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Type</string>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>70</y>
+     <width>711</width>
+     <height>361</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tabCCS">
+    <attribute name="title">
+     <string>Change Cipher Spec</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tabAlert">
+    <attribute name="title">
+     <string>Alert</string>
+    </attribute>
+    <widget class="QLineEdit" name="leAlertSeverity">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>51</width>
+       <height>28</height>
+      </rect>
      </property>
     </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="lbLength">
-     <property name="text">
-      <string>Length</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="buddy">
-      <cstring>leSslPayloadLength</cstring>
+    <widget class="QLineEdit" name="leAlertDescription">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>70</y>
+       <width>51</width>
+       <height>28</height>
+      </rect>
      </property>
     </widget>
-   </item>
-   <item row="3" column="2">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>29</y>
+       <width>63</width>
+       <height>31</height>
+      </rect>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="3">
-    <widget class="QLabel" name="label_24">
      <property name="text">
-      <string>Version</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <string>Severity</string>
      </property>
     </widget>
-   </item>
-   <item row="0" column="4">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>81</width>
        <height>20</height>
-      </size>
+      </rect>
      </property>
-    </spacer>
-   </item>
-   <item row="2" column="3" rowspan="2" colspan="2">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Action</string>
+     <property name="text">
+      <string>Description</string>
      </property>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>59</width>
-        <height>14</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="sslHandshakePro">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>190</y>
-        <width>171</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <item>
-       <property name="text">
-        <string>CLIENT_HELLO</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>HELLO_REQUEST</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>SERVER_HELLO</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>CERTIFICATE</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>SERVER_KEY_EXCHANGE</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>CERTIFICATE_REQUEST</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>SERVER_DONE</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>CERTIFICATE_VERIFY</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>CLIENT_KEY_EXCHANGE</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>FINISHED</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>170</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>HANDSHAKE</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_5">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>59</width>
-        <height>14</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Alert</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="leLength">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>140</y>
-        <width>91</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>59</width>
-        <height>14</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Length</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="leVersion">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>140</y>
-        <width>91</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>120</y>
-        <width>59</width>
-        <height>14</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Version</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="leAlertSeverity">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>80</y>
-        <width>51</width>
-        <height>28</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="leAlertDescription">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>80</y>
-        <width>51</width>
-        <height>28</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>63</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Severity</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>50</y>
-        <width>81</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Description</string>
-      </property>
-     </widget>
     </widget>
-   </item>
-   <item row="1" column="4">
-    <widget class="QLineEdit" name="leSslVersion"/>
-   </item>
-   <item row="2" column="0" rowspan="2" colspan="2">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>TYPE</string>
-     </property>
-     <widget class="QComboBox" name="cbSslType">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>161</width>
-        <height>28</height>
-       </rect>
-      </property>
-      <item>
-       <property name="text">
-        <string>Change Cipher Spec</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Alert</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Handshake</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Application Data</string>
-       </property>
-      </item>
-     </widget>
-    </widget>
-   </item>
-  </layout>
+   </widget>
+   <widget class="QWidget" name="tabHandshake">
+    <attribute name="title">
+     <string>Handshake</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tabApplicationData">
+    <attribute name="title">
+     <string>Application Data</string>
+    </attribute>
+   </widget>
+  </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cbSslType</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>tabWidget</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>151</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
