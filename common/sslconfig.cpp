@@ -92,11 +92,6 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
         SslProtocol::ssl_payloadLength,
         leSslPayloadLength->text());
 
-    proto->setFieldData(
-        SslProtocol::ssl_alert_message,
-        (leAlertSeverity->text().toInt(&isOk, 16) << 8) |
-        (leAlertDescription->text().toInt(&isOk, 16) & 0xFF));
-
     if(cbSslType->currentIndex() == 0)
         proto->setFieldData(SslProtocol::ssl_ccs, 1);
 

@@ -151,14 +151,14 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
             }
             break;
         case ssl_handshake_type:
-            if(!data.handshake().has_type())
+            if(!data.has_handshake() || !data.handshake().has_type())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
             break;
         case ssl_handshake_length:
-            if(!data.handshake().has_length())
+            if(!data.has_handshake() || !data.handshake().has_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
@@ -166,7 +166,7 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         break;
 
         case ssl_handshake_version:
-            if(!data.handshake().has_version())
+            if(!data.has_handshake() || !data.handshake().has_version())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
@@ -174,98 +174,98 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         break;
 
         case ssl_handshake_random:
-            if(!(data.handshake().has_random() || data.handshake().has_random_time()))
+            if(!data.has_handshake() || !(data.handshake().has_random() || data.handshake().has_random_time()))
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_sessionIdLen:
-            if(!data.handshake().has_session_id_length())
+            if(!data.has_handshake() || !data.handshake().has_session_id_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_sessionId:
-            if(!data.handshake().has_session_id())
+            if(!data.has_handshake() || !data.handshake().has_session_id())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_ciphersuitesLen:
-            if(!data.handshake().has_ciphersuites_length())
+            if(!data.has_handshake() || !data.handshake().has_ciphersuites_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_compMethodsLen:
-            if(!data.handshake().has_comp_methods_length())
+            if(!data.has_handshake() || !data.handshake().has_comp_methods_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_extensionsLen:
-            if(!data.handshake().has_extensions_length())
+            if(!data.has_handshake() || !data.handshake().has_extensions_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_certificatesLen:
-            if(!data.handshake().has_certificates_length())
+            if(!data.has_handshake() || !data.handshake().has_certificates_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_keyLen:
-            if(!data.handshake().has_key_length())
+            if(!data.has_handshake() || !data.handshake().has_key_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_key:
-            if(!data.handshake().has_key())
+            if(!data.has_handshake() || !data.handshake().has_key())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_ciphersuite:
-            if(!data.handshake().ciphersuite_size())
+            if(!data.has_handshake() || !data.handshake().ciphersuite_size())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_compMethod:
-            if(!data.handshake().comp_method_size())
+            if(!data.has_handshake() || !data.handshake().comp_method_size())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_extension:
-            if(!data.handshake().extension_size())
+            if(!data.has_handshake() || !data.handshake().extension_size())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_appData:
-            if(!data.app_data().has_data())
+            if(!data.has_app_data() || !data.app_data().has_data())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_alert_message:
-        if(!data.alert().has_alert_message())
+        if(!data.has_alert() || !data.alert().has_alert_message())
         {
             flags &= ~FrameField;
             flags |= MetaField;
