@@ -380,8 +380,6 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
 
         case ssl_ccs:
         {
-            if(!data.has_change_cipher_spec())
-                break;
             int ccs = data.change_cipher_spec().ccs() & 0xFF;
             switch(attrib)
             {
@@ -397,7 +395,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                     return fv;
                 }
                 case FieldTextValue:
-                    return QString("%1").arg(ccs);
+                    return QString("%1").arg(ccs, 2, BASE_HEX, QChar('0'));
                 case FieldBitSize:
                     return 8;
                 default:
@@ -926,6 +924,16 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint type = value.toUInt(&isOk);
             if (isOk)
                 data.set_type(type);
+
+//            if(type != 0x14)
+//                data.clear_change_cipher_spec();
+//            if(type != 0x15)
+//                data.clear_alert();
+//            if(type != 0x16)
+//                data.clear_handshake();
+//            if(type != 0x17)
+//                data.clear_app_data();
+
             break;
         }
         case ssl_version:
@@ -947,6 +955,11 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint alert = value.toInt(&isOk);
             if(isOk)
                 data.mutable_alert()->set_alert_message(alert);
+            break;
+        }
+        case ssl_ccs:
+        {
+            data.mutable_change_cipher_spec()->set_ccs(1);
             break;
         }
         default:
