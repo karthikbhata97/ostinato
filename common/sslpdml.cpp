@@ -167,7 +167,7 @@ void PdmlSslProtocol::knownFieldHandler(QString name, QString valueHexStr,
             break;
         }
         default:
-            qDebug("%s: unhandled cpptype = %d", __FUNCTION__,
+            qFatal("%s: unhandled cpptype = %d", __FUNCTION__,
                     fieldDesc->cpp_type());
         }
 

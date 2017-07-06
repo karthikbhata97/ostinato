@@ -735,8 +735,6 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                         qToBigEndian((quint16) ciphersuite, (uchar*) rv.data());
                         fv.append(rv);
                     }
-                    qDebug() << fv.size() * 8;
-                    qDebug() << data.handshake().ciphersuite_size() * 8;
                     return fv;
                 }
                 case FieldBitSize:
@@ -924,6 +922,8 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint type = value.toUInt(&isOk);
             if (isOk)
                 data.set_type(type);
+// Doesn't help but crashed! Probably a dirty bit is set on updated values and updates are mirrored
+// where as the meta fields are found only once!
 
 //            if(type != 0x14)
 //                data.clear_change_cipher_spec();
@@ -960,6 +960,20 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
         case ssl_ccs:
         {
             data.mutable_change_cipher_spec()->set_ccs(1);
+            break;
+        }
+        case ssl_handshake_type:
+        {
+            uint type = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_type(type);
+            break;
+        }
+        case ssl_handshake_length:
+        {
+            uint length = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_length(length);
             break;
         }
         default:

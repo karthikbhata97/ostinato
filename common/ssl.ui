@@ -127,7 +127,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tabCCS">
     <attribute name="title">
@@ -218,6 +218,125 @@
     <attribute name="title">
      <string>Handshake</string>
     </attribute>
+    <widget class="QComboBox" name="cbHandshakeType">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>10</y>
+       <width>131</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>HelloRequest</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ClientHello</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ServerHello</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Certificate</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ServerKeyExchange</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>CertificateRequest</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ServerHelloDone</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>CertificateVerify</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ClientKeyExchange</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Finished</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>9</y>
+       <width>63</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Type</string>
+     </property>
+    </widget>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="geometry">
+      <rect>
+       <x>-1</x>
+       <y>49</y>
+       <width>711</width>
+       <height>281</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="stHelloRequest"/>
+     <widget class="QWidget" name="stClientHello"/>
+     <widget class="QWidget" name="stServerHello"/>
+     <widget class="QWidget" name="stCertificate"/>
+     <widget class="QWidget" name="stServerKeyEx"/>
+     <widget class="QWidget" name="stCertificateReq"/>
+     <widget class="QWidget" name="stServerHelloDone"/>
+     <widget class="QWidget" name="stCertificateVerify"/>
+     <widget class="QWidget" name="stClientKeyEx"/>
+     <widget class="QWidget" name="stFinished"/>
+    </widget>
+    <widget class="QLineEdit" name="leHandshakeLen">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>10</y>
+       <width>113</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>10</y>
+       <width>63</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Length</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tabApplicationData">
     <attribute name="title">
@@ -241,6 +360,22 @@
     <hint type="destinationlabel">
      <x>151</x>
      <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbHandshakeType</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>stackedWidget</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>98</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>198</y>
     </hint>
    </hints>
   </connection>
