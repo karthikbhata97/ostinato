@@ -58,7 +58,7 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
 
     cbSslType->setCurrentIndex(
         getFieldIndex(
-            FieldName::SslProtocol,
+            SslProtocol,
             proto->fieldData(
                 SslProtocol::ssl_type,
                     AbstractProtocol::FieldValue
@@ -78,7 +78,7 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
 
     cbHandshakeType->setCurrentIndex(
         getFieldIndex(
-            FieldName::HandshakeProtocol,
+            HandshakeProtocol,
             proto->fieldData(
                 SslProtocol::ssl_handshake_type,
                 AbstractProtocol::FieldValue
@@ -103,7 +103,7 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
 
     proto->setFieldData(
         SslProtocol::ssl_type,
-        getFieldValue(FieldName::SslProtocol, cbSslType->currentIndex()));
+        getFieldValue(SslProtocol, cbSslType->currentIndex()));
 
     proto->setFieldData(
         SslProtocol::ssl_version,
@@ -128,7 +128,7 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
     {
         proto->setFieldData(
             SslProtocol::ssl_handshake_type,
-            getFieldValue(FieldName::HandshakeProtocol,
+            getFieldValue(HandshakeProtocol,
                 cbHandshakeType->currentIndex()));
 
         proto->setFieldData(
@@ -145,17 +145,17 @@ int SslConfigForm::getFieldIndex(int field, QString value)
 
     switch (field)
     {
-        case FieldName::SslProtocol:
+        case SslProtocol:
         {
             switch (index)
             {
-            case SslType::CCS:
+            case CCS:
                 return 0;
-            case SslType::Alert:
+            case Alert:
                 return 1;
-            case SslType::Handshake:
+            case Handshake:
                 return 2;
-            case SslType::AppData:
+            case AppData:
                 return 3;
             default:
                 qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
@@ -164,29 +164,29 @@ int SslConfigForm::getFieldIndex(int field, QString value)
             }
             break;
         }
-        case FieldName::HandshakeProtocol:
+        case HandshakeProtocol:
         {
             switch(index)
             {
-            case Handshake::HelloRequest:
+            case HelloRequest:
                 return 0;
-            case Handshake::ClientHello:
+            case ClientHello:
                 return 1;
-            case Handshake::ServerHello:
+            case ServerHello:
                 return 2;
-            case Handshake::Certificate:
+            case Certificate:
                 return 3;
-            case Handshake::ServerKeyExchange:
+            case ServerKeyExchange:
                 return 4;
-            case Handshake::CertificateRequest:
+            case CertificateRequest:
                 return 5;
-            case Handshake::ServerHelloDone:
+            case ServerHelloDone:
                 return 6;
-            case Handshake::CertificateVerify:
+            case CertificateVerify:
                 return 7;
-            case Handshake::ClientKeyExchange:
+            case ClientKeyExchange:
                 return 8;
-            case Handshake::Finished:
+            case Finished:
                 return 9;
             }
             break;
@@ -199,18 +199,18 @@ int SslConfigForm::getFieldValue(int field, int index)
 {
     switch (field)
     {
-        case FieldName::SslProtocol:
+        case SslProtocol:
         {
             switch (index)
             {
             case 0:
-                return SslType::CCS;
+                return CCS;
             case 1:
-                return SslType::Alert;
+                return Alert;
             case 2:
-                return SslType::Handshake;
+                return Handshake;
             case 3:
-                return SslType::AppData;
+                return AppData;
             default:
                 qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                     index);
@@ -218,30 +218,30 @@ int SslConfigForm::getFieldValue(int field, int index)
             }
             break;
         }
-        case FieldName::HandshakeProtocol:
+        case HandshakeProtocol:
         {
             switch (index)
             {
             case 0:
-                return Handshake::HelloRequest;
+                return HelloRequest;
             case 1:
-                return Handshake::ClientHello;
+                return ClientHello;
             case 2:
-                return Handshake::ServerHello;
+                return ServerHello;
             case 3:
-                return Handshake::Certificate;
+                return Certificate;
             case 4:
-                return Handshake::ServerKeyExchange;
+                return ServerKeyExchange;
             case 5:
-                return Handshake::CertificateRequest;
+                return CertificateRequest;
             case 6:
-                return Handshake::ServerHelloDone;
+                return ServerHelloDone;
             case 7:
-                return Handshake::CertificateVerify;
+                return CertificateVerify;
             case 8:
-                return Handshake::ClientKeyExchange;
+                return ClientKeyExchange;
             case 9:
-                return Handshake::Finished;
+                return Finished;
             }
             break;
         }
