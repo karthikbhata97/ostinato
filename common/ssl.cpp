@@ -1009,6 +1009,27 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             data.mutable_handshake()->set_session_id(strId);
             break;
         }
+        case ssl_handshake_ciphersuitesLen:
+        {
+            uint length = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_ciphersuites_length(length);
+            break;
+        }
+        case ssl_handshake_compMethodsLen:
+        {
+            uint length = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_comp_methods_length(length);
+            break;
+        }
+        case ssl_handshake_extensionsLen:
+        {
+            uint length = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_extensions_length(length);
+            break;
+        }
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);

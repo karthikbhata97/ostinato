@@ -120,6 +120,24 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             AbstractProtocol::FieldValue
         ).toString());
 
+    leCipherSuitesLen->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_ciphersuitesLen,
+            AbstractProtocol::FieldValue
+        ).toString());
+
+    leCompressionLength->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_compMethodsLen,
+            AbstractProtocol::FieldValue
+        ).toString());
+
+    leExtensionsLen->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_extensionsLen,
+            AbstractProtocol::FieldValue
+        ).toString());
+
 }
 
 /*!
@@ -180,6 +198,17 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
             SslProtocol::ssl_handshake_sessionId,
             leSessionID->text());
 
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_ciphersuitesLen,
+            leCipherSuitesLen->text().toInt(&isOk, 10));
+
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_compMethodsLen,
+            leCompressionLength->text().toInt(&isOk, 10));
+
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_extensionsLen,
+            leExtensionsLen->text().toInt(&isOk, 10));
     }
 
 }
