@@ -107,6 +107,19 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             SslProtocol::ssl_handshake_random,
             AbstractProtocol::FieldValue
         ).toString().right(56));
+
+    leSessionIDLen->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_sessionIdLen,
+            AbstractProtocol::FieldValue
+        ).toString());
+
+    leSessionID->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_sessionId,
+            AbstractProtocol::FieldValue
+        ).toString());
+
 }
 
 /*!
@@ -158,6 +171,15 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
         proto->setFieldData(
             SslProtocol::ssl_handshake_random,
             (leRandomTime->text()).append(leRandomBytes->text()));
+
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_sessionIdLen,
+            leSessionIDLen->text().toInt(&isOk, 10));
+
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_sessionId,
+            leSessionID->text());
+
     }
 
 }

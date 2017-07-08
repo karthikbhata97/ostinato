@@ -541,7 +541,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             case FieldName:
                 return QString("Session ID");
             case FieldValue:
-                return sessionId;
+                return sessionId.toHex();
             case FieldTextValue:
                 return sessionId.toHex();
             case FieldFrameValue:
@@ -993,6 +993,20 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             std::string strBytes(bytesArray.constData(), bytesArray.size());
             data.mutable_handshake()->set_random(strBytes);
 
+            break;
+        }
+        case ssl_handshake_sessionIdLen:
+        {
+            uint length = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_session_id_length(length);
+            break;
+        }
+        case ssl_handshake_sessionId:
+        {
+            QByteArray idArray = QByteArray::fromHex(value.toString().toLatin1());
+            std::string strId(idArray.constData(), idArray.size());
+            data.mutable_handshake()->set_session_id(strId);
             break;
         }
         default:
