@@ -468,7 +468,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldName:
                     return QString("Handshake Version");
                 case FieldValue:
-                    return version;
+                    return QString("%1").arg(version, 4, BASE_HEX, QChar('0'));
                 case FieldTextValue:
                     return QString("%1 (%2)").arg(version, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.handshake().version_showname().c_str()));
                 case FieldFrameValue:
@@ -495,7 +495,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             case FieldName:
                 return QString("Random");
             case FieldValue:
-                return random;
+                return random.toHex();
             case FieldTextValue:
                 return QString::fromStdString(data.handshake().random_time_showname()).append(QString("\n")).append(QString::fromStdString(data.handshake().random_showname()));
             case FieldFrameValue:
@@ -974,6 +974,25 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint length = value.toInt(&isOk);
             if(isOk)
                 data.mutable_handshake()->set_length(length);
+            break;
+        }
+        case ssl_handshake_version:
+        {
+            uint version = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_version(version);
+            break;
+        }
+        case ssl_handshake_random:
+        {
+            QByteArray timeArray = QByteArray::fromHex(value.toString().left(8).toLatin1());
+            std::string strTime(timeArray.constData(), timeArray.size());
+            data.mutable_handshake()->set_random_time(strTime);
+
+            QByteArray bytesArray = QByteArray::fromHex(value.toString().right(56).toLatin1());
+            std::string strBytes(bytesArray.constData(), bytesArray.size());
+            data.mutable_handshake()->set_random(strBytes);
+
             break;
         }
         default:

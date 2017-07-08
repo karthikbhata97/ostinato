@@ -90,6 +90,23 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             AbstractProtocol::FieldValue
         ).toString());
 
+    leHandshakeVersion->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_version,
+            AbstractProtocol::FieldValue
+        ).toString());
+
+    leRandomTime->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_random,
+            AbstractProtocol::FieldValue
+        ).toString().left(8));
+
+    leRandomBytes->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_random,
+            AbstractProtocol::FieldValue
+        ).toString().right(56));
 }
 
 /*!
@@ -123,7 +140,6 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
             (leAlertSeverity->text().toInt(&isOk, 16) << 8) |
             (leAlertDescription->text().toInt(&isOk, 16) & 0xFF));
     }
-
     if(cbSslType->currentIndex() == 2)
     {
         proto->setFieldData(
@@ -134,6 +150,14 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
         proto->setFieldData(
             SslProtocol::ssl_handshake_length,
             leHandshakeLen->text());
+
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_version,
+            leHandshakeVersion->text().toInt(&isOk, 16));
+
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_random,
+            (leRandomTime->text()).append(leRandomBytes->text()));
     }
 
 }

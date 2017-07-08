@@ -291,33 +291,10 @@
       <string>Type</string>
      </property>
     </widget>
-    <widget class="QStackedWidget" name="stackedWidget">
-     <property name="geometry">
-      <rect>
-       <x>-1</x>
-       <y>49</y>
-       <width>711</width>
-       <height>281</height>
-      </rect>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="stHelloRequest"/>
-     <widget class="QWidget" name="stClientHello"/>
-     <widget class="QWidget" name="stServerHello"/>
-     <widget class="QWidget" name="stCertificate"/>
-     <widget class="QWidget" name="stServerKeyEx"/>
-     <widget class="QWidget" name="stCertificateReq"/>
-     <widget class="QWidget" name="stServerHelloDone"/>
-     <widget class="QWidget" name="stCertificateVerify"/>
-     <widget class="QWidget" name="stClientKeyEx"/>
-     <widget class="QWidget" name="stFinished"/>
-    </widget>
     <widget class="QLineEdit" name="leHandshakeLen">
      <property name="geometry">
       <rect>
-       <x>350</x>
+       <x>300</x>
        <y>10</y>
        <width>113</width>
        <height>28</height>
@@ -327,7 +304,7 @@
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>230</x>
        <y>10</y>
        <width>63</width>
        <height>20</height>
@@ -336,6 +313,101 @@
      <property name="text">
       <string>Length</string>
      </property>
+    </widget>
+    <widget class="QLineEdit" name="leHandshakeVersion">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>50</y>
+       <width>113</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>63</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Version</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>50</y>
+       <width>191</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>63</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Random</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>51</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Time:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>51</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bytes:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="leRandomTime">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>30</y>
+        <width>113</width>
+        <height>28</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="leRandomBytes">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>70</y>
+        <width>113</width>
+        <height>28</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="tabApplicationData">
@@ -360,22 +432,6 @@
     <hint type="destinationlabel">
      <x>151</x>
      <y>82</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbHandshakeType</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>98</x>
-     <y>121</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>100</x>
-     <y>198</y>
     </hint>
    </hints>
   </connection>
