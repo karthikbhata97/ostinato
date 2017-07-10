@@ -925,14 +925,14 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
 // Doesn't help but crashed! Probably a dirty bit is set on updated values and updates are mirrored
 // where as the meta fields are found only once!
 
-//            if(type != 0x14)
-//                data.clear_change_cipher_spec();
-//            if(type != 0x15)
-//                data.clear_alert();
-//            if(type != 0x16)
-//                data.clear_handshake();
-//            if(type != 0x17)
-//                data.clear_app_data();
+            if(type != 0x14)
+                data.clear_change_cipher_spec();
+            if(type != 0x15)
+                data.clear_alert();
+            if(type != 0x16)
+                data.clear_handshake();
+            if(type != 0x17)
+                data.clear_app_data();
 
             break;
         }

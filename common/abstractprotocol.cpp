@@ -255,7 +255,7 @@ int AbstractProtocol::metaFieldCount() const
 */
 int AbstractProtocol::frameFieldCount() const
 {
-    if (_frameFieldCount < 0)
+//    if (_frameFieldCount < 0)
     {
         int c = 0;
         for (int i = 0; i < fieldCount() ; i++) 
