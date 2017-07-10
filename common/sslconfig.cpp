@@ -199,6 +199,19 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             teCertificates->setPlainText(certificates.join("\n"));
 
         }
+
+    leClientKeyLen->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_keyLen,
+            AbstractProtocol::FieldValue
+        ).toString());
+
+    teClientKey->setPlainText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_key,
+            AbstractProtocol::FieldValue
+        ).toString());
+
 }
 
 /*!
@@ -337,6 +350,20 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
                 proto->setFieldData(
                     SslProtocol::ssl_handshake_certificate,
                     list);
+            }
+        }
+
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_keyLen,
+            leClientKeyLen->text().toInt(&isOk, 10));
+
+        {
+            int handshakeType = getFieldValue(HandshakeProtocol, cbHandshakeType->currentIndex());
+            if (handshakeType == ClientKeyExchange)
+            {
+                proto->setFieldData(
+                    SslProtocol::ssl_handshake_key,
+                    teClientKey->toPlainText());
             }
         }
 

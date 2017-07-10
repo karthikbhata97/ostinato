@@ -347,7 +347,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="pgBlank"/>
      <widget class="QWidget" name="pgHello">
@@ -763,8 +763,8 @@
       <widget class="QTextEdit" name="teClientKey">
        <property name="geometry">
         <rect>
-         <x>110</x>
-         <y>40</y>
+         <x>140</x>
+         <y>70</y>
          <width>301</width>
          <height>91</height>
         </rect>
@@ -773,14 +773,37 @@
       <widget class="QLabel" name="label_25">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>30</y>
+         <x>10</x>
+         <y>60</y>
          <width>71</width>
          <height>31</height>
         </rect>
        </property>
        <property name="text">
         <string>Client Key</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="leClientKeyLen">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>20</y>
+         <width>113</width>
+         <height>28</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_23">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Client Key Length</string>
        </property>
       </widget>
      </widget>

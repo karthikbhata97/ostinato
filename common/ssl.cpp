@@ -222,6 +222,13 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
         break;
+        case ssl_handshake_keyLen:
+            if(!data.has_handshake() || !data.handshake().has_key_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
         case ssl_handshake_key:
             if(!data.has_handshake() || !data.handshake().has_key())
             {
@@ -653,6 +660,33 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             break;
         }
 
+        case ssl_handshake_keyLen:
+        {
+            int length = data.handshake().key_length() & 0xFFFF;
+
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString::fromUtf8(data.handshake().key_showname().c_str()).split(':')[0];
+                case FieldValue:
+                    return length;
+                case FieldTextValue:
+                    return QString("%1").arg(length);
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    fv.resize(2);
+                    qToBigEndian((quint16) length, (uchar*) fv.data());
+                    return fv;
+                }
+                case FieldBitSize:
+                    return 16;
+                default:
+                    break;
+            }
+            break;
+        }
+
         case ssl_handshake_key:
         {
             QByteArray key;
@@ -661,7 +695,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             case FieldName:
                 return QString::fromUtf8(data.handshake().key_showname().c_str()).split(':')[0];
             case FieldValue:
-                return key;
+                return key.toHex();
             case FieldTextValue:
                 return key.toHex();
             case FieldFrameValue:
@@ -1087,6 +1121,22 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
                 std::string strItem(itemArray.constData(), itemArray.size());
                 data.mutable_handshake()->add_certificate(strItem);
             }
+            break;
+        }
+
+        case ssl_handshake_keyLen:
+        {
+            uint length = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_key_length(length);
+            break;
+        }
+
+        case ssl_handshake_key:
+        {
+            QByteArray dataArray = QByteArray::fromHex(value.toString().toLatin1());
+            std::string strData(dataArray.constData(), dataArray.size());
+            data.mutable_handshake()->set_key(strData);
             break;
         }
 
