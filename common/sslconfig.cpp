@@ -323,3 +323,31 @@ int SslConfigForm::getFieldValue(int field, int index)
     }
     return -1;
 }
+
+void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
+{
+    switch (index) {
+    case 0:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 9:
+        swHandshake->setCurrentIndex(0);
+        break;
+    case 1:
+        swHandshake->setCurrentIndex(1);
+        swHello->setCurrentIndex(0);
+        break;
+    case 2:
+        swHandshake->setCurrentIndex(1);
+        swHello->setCurrentIndex(1);
+        break;
+    case 3:
+        swHandshake->setCurrentIndex(2);
+        break;
+    case 8:
+        swHandshake->setCurrentIndex(3);
+        break;
+    }
+}

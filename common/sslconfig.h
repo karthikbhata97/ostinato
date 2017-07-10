@@ -64,6 +64,8 @@ public:
     int getFieldIndex(int field, QString value);
     int getFieldValue(int field, int index);
 
+private slots:
+    void on_cbHandshakeType_currentIndexChanged(int index);
 };
 
 #endif

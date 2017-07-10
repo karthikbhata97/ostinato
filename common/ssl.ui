@@ -406,11 +406,6 @@
          </rect>
         </property>
        </widget>
-       <zorder>label_12</zorder>
-       <zorder>label_11</zorder>
-       <zorder>leSessionIDLen</zorder>
-       <zorder>leSessionID</zorder>
-       <zorder>swHello</zorder>
       </widget>
       <widget class="QWidget" name="wRandom" native="true">
        <property name="geometry">
