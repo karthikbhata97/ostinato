@@ -98,6 +98,10 @@ message Ssl {
             optional bytes key = 45;
             optional string key_showname = 46;
 
+            // meta
+            optional bytes certificate_length = 47;
+            optional string certificate_length_showname = 48;
+
     }
 
     message ChangeCipherSpec {

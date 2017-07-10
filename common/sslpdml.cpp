@@ -62,6 +62,9 @@ PdmlSslProtocol::PdmlSslProtocol()
     fieldMap_.insert("ssl.handshake.certificates_length", OstProto::Ssl::Handshake::kCertificatesLengthFieldNumber);
     fieldMap_.insert("ssl.handshake.epms_len", OstProto::Ssl::Handshake::kKeyLengthFieldNumber);
     fieldMap_.insert("ssl.handshake.epms", OstProto::Ssl::Handshake::kKeyFieldNumber);
+
+    // meta
+    fieldMap_.insert("ssl.handshake.certificate_length", OstProto::Ssl::Handshake::kCertificateLengthFieldNumber);
 }
 
 PdmlSslProtocol::~PdmlSslProtocol()
@@ -269,7 +272,9 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
     else if(name=="ssl.handshake.certificate")
     {
         OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
-        QByteArray dataArray = QByteArray::fromHex(attributes.value("value").toLatin1());
+        QByteArray dataArray;
+        dataArray.append(QString().fromStdString(handshake->certificate_length()));
+        dataArray.append(QByteArray::fromHex(attributes.value("value").toLatin1()));
         std::string strData(dataArray.constData(), dataArray.size());
         handshake->add_certificate(strData);
         handshake->add_certificate_showname(strShowName);
