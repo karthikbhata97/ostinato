@@ -770,7 +770,16 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldName:
                     return QString("Extentions: ");
                 case FieldValue:
-                    return "todo";
+                {
+                    QStringList list;
+                    for (int i=0; i < data.handshake().extension_size(); i++)
+                    {
+                        QByteArray item;
+                        item.append(QString().fromStdString(data.handshake().extension(i)));
+                        list.append(item.toHex());
+                    }
+                    return list;
+                }
                 case FieldTextValue:
                 {
                     QString list;
@@ -1043,6 +1052,21 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             }
             break;
         }
+
+        case ssl_handshake_extension:
+        {
+            data.mutable_handshake()->clear_extension();
+            QStringList list = value.toStringList();
+
+            for (const QString &st: list)
+            {
+                QByteArray itemArray = QByteArray::fromHex(st.toLatin1());
+                std::string strItem(itemArray.constData(), itemArray.size());
+                data.mutable_handshake()->add_extension(strItem);
+            }
+            break;
+        }
+
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);

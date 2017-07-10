@@ -163,6 +163,7 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             }
         }
 
+        // comp method
         {
             int handshakeType = proto->fieldData(SslProtocol::ssl_handshake_type,
                                              AbstractProtocol::FieldValue).toString().toInt(&isOk, 16);
@@ -176,6 +177,16 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             {
                 leSHelloComp->setText(compMethods[0]);
             }
+
+        }
+
+        // extentions
+        {
+            QStringList extensions = proto->fieldData(
+                        SslProtocol::ssl_handshake_extension,
+                        AbstractProtocol::FieldValue).toStringList();
+
+            teExtensions->setPlainText(extensions.join("\n"));
 
         }
 
@@ -292,6 +303,18 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
                 list << leSHelloComp->text();
                 proto->setFieldData(
                     SslProtocol::ssl_handshake_compMethod,
+                    list);
+            }
+        }
+
+        // extensions
+        {
+            int handshakeType = getFieldValue(HandshakeProtocol, cbHandshakeType->currentIndex());
+            if (handshakeType == ClientHello || handshakeType == ServerHello)
+            {
+                QStringList list = teExtensions->toPlainText().split('\n');
+                proto->setFieldData(
+                    SslProtocol::ssl_handshake_extension,
                     list);
             }
         }

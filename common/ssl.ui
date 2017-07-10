@@ -524,7 +524,7 @@
          <string>Length</string>
         </property>
        </widget>
-       <widget class="QTextEdit" name="textEdit_2">
+       <widget class="QTextEdit" name="teExtensions">
         <property name="geometry">
          <rect>
           <x>20</x>
