@@ -492,20 +492,30 @@ void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
     case 7:
     case 9:
         swHandshake->setCurrentIndex(0);
+        leHandshakeVersion->hide();
+        labelHandshakeVersion->hide();
         break;
     case 1:
         swHandshake->setCurrentIndex(1);
         swHello->setCurrentIndex(0);
+        leHandshakeVersion->show();
+        labelHandshakeVersion->show();
         break;
     case 2:
         swHandshake->setCurrentIndex(1);
         swHello->setCurrentIndex(1);
+        leHandshakeVersion->show();
+        labelHandshakeVersion->show();
         break;
     case 3:
         swHandshake->setCurrentIndex(2);
+        leHandshakeVersion->hide();
+        labelHandshakeVersion->hide();
         break;
     case 8:
         swHandshake->setCurrentIndex(3);
+        leHandshakeVersion->hide();
+        labelHandshakeVersion->hide();
         break;
     }
 }
