@@ -20,6 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "sslconfig.h"
 #include "ssl.h"
 
+#include <QDebug>
+
 SslConfigForm::SslConfigForm(QWidget *parent)
     : AbstractProtocolConfigForm(parent)
 {
@@ -42,7 +44,7 @@ See AbstractProtocolConfigForm::loadWidget() for more info
 */
 void SslConfigForm::loadWidget(AbstractProtocol *proto)
 {
-//    bool isOk;
+    bool isOk;
 
     leSslVersion->setText(
         proto->fieldData(
@@ -138,6 +140,45 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             AbstractProtocol::FieldValue
         ).toString());
 
+    leCertLen->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_certificatesLen,
+            AbstractProtocol::FieldValue
+        ).toString());
+
+        // ciphersuite
+        {
+            int handshakeType = proto->fieldData(SslProtocol::ssl_handshake_type,
+                                                 AbstractProtocol::FieldValue).toString().toInt(&isOk, 16);
+            QStringList ciphersuites = proto->fieldData(SslProtocol::ssl_handshake_ciphersuite,
+                                                        AbstractProtocol::FieldValue).toStringList();
+
+            if(handshakeType == ClientHello)
+            {
+                teCipherSuites->setPlainText(ciphersuites.join("\n"));
+            }
+            else if (handshakeType == ServerHello)
+            {
+                leSHelloCipher->setText(ciphersuites[0]);
+            }
+        }
+
+        {
+            int handshakeType = proto->fieldData(SslProtocol::ssl_handshake_type,
+                                             AbstractProtocol::FieldValue).toString().toInt(&isOk, 16);
+            QStringList compMethods = proto->fieldData(SslProtocol::ssl_handshake_compMethod,
+                                                   AbstractProtocol::FieldValue).toStringList();
+            if(handshakeType == ClientHello)
+            {
+                teCompMethods->setPlainText(compMethods.join("\n"));
+            }
+            else if (handshakeType == ServerHello)
+            {
+                leSHelloComp->setText(compMethods[0]);
+            }
+
+        }
+
 }
 
 /*!
@@ -209,6 +250,52 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
         proto->setFieldData(
             SslProtocol::ssl_handshake_extensionsLen,
             leExtensionsLen->text().toInt(&isOk, 10));
+
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_certificatesLen,
+            leCertLen->text().toInt(&isOk, 16));
+
+        // ciphersuite
+        {
+            int handshakeType = getFieldValue(HandshakeProtocol, cbHandshakeType->currentIndex());
+            if(handshakeType == ClientHello)
+            {
+                QStringList list = teCipherSuites->toPlainText().split('\n');
+                proto->setFieldData(
+                    SslProtocol::ssl_handshake_ciphersuite,
+                    list);
+            }
+            else if(handshakeType == ServerHello)
+            {
+                QStringList list;
+                list << leSHelloCipher->text();
+                proto->setFieldData(
+                    SslProtocol::ssl_handshake_ciphersuite,
+                    list);
+            }
+
+        }
+
+        // compmethod
+        {
+            int handshakeType = getFieldValue(HandshakeProtocol, cbHandshakeType->currentIndex());
+            if(handshakeType == ClientHello)
+            {
+                QStringList list = teCompMethods->toPlainText().split('\n');
+                proto->setFieldData(
+                    SslProtocol::ssl_handshake_compMethod,
+                    list);
+            }
+            else if(handshakeType == ServerHello)
+            {
+                QStringList list;
+                list << leSHelloComp->text();
+                proto->setFieldData(
+                    SslProtocol::ssl_handshake_compMethod,
+                    list);
+            }
+        }
+
     }
 
 }

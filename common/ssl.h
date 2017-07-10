@@ -58,7 +58,6 @@ public:
         ssl_handshake_extension,
         ssl_handshake_certificatesLen,
         ssl_handshake_certificate,
-        ssl_handshake_keyLen,
         ssl_handshake_key,
 
         ssl_appData,

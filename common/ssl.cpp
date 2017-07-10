@@ -222,13 +222,6 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
         break;
-        case ssl_handshake_keyLen:
-            if(!data.has_handshake() || !data.handshake().has_key_length())
-            {
-                flags &= ~FrameField;
-                flags |= MetaField;
-            }
-        break;
         case ssl_handshake_key:
             if(!data.has_handshake() || !data.handshake().has_key())
             {
@@ -660,33 +653,6 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             break;
         }
 
-        case ssl_handshake_keyLen:
-        {
-            int length = data.handshake().key_length() & 0xFFFF;
-
-            switch(attrib)
-            {
-                case FieldName:
-                    return QString::fromUtf8(data.handshake().key_showname().c_str()).split(':')[0];
-                case FieldValue:
-                    return length;
-                case FieldTextValue:
-                    return QString("%1").arg(length);
-                case FieldFrameValue:
-                {
-                    QByteArray fv;
-                    fv.resize(2);
-                    qToBigEndian((quint16) length, (uchar*) fv.data());
-                    return fv;
-                }
-                case FieldBitSize:
-                    return 16;
-                default:
-                    break;
-            }
-            break;
-        }
-
         case ssl_handshake_key:
         {
             QByteArray key;
@@ -713,11 +679,18 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldName:
                     return QString("Cipher Suites");
                 case FieldValue:
-                    return "TODO"; // todo
+                {
+                    QStringList list;
+                    for (int i=0; i < data.handshake().ciphersuite_size(); i++)
+                    {
+                        list.append(QString("%1").arg(data.handshake().ciphersuite(i), 4, BASE_HEX, QChar('0')));
+                    }
+                    return list;
+                }
                 case FieldTextValue:
                 {
                     QString list;
-                    for (int i=0; i < data.handshake().ciphersuite_size(); i++)
+                    for (int i=0; i < data.handshake().ciphersuite_showname_size(); i++)
                     {
                         list.append("\n   ");
                         list.append(QString::fromUtf8(data.handshake().ciphersuite_showname(i).c_str()));
@@ -752,11 +725,18 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldName:
                     return QString("Compression Methods");
                 case FieldValue:
-                    return "TODO"; // todo
+                {
+                    QStringList list;
+                    for (int i=0; i < data.handshake().comp_method_size(); i++)
+                    {
+                        list.append(QString("%1").arg(data.handshake().comp_method(i), 2, BASE_HEX, QChar('0')));
+                    }
+                    return list;
+                }
                 case FieldTextValue:
                 {
                     QString list;
-                    for (int i=0; i < data.handshake().comp_method_size(); i++)
+                    for (int i=0; i < data.handshake().comp_method_showname_size(); i++)
                     {
                         list.append("\n   ");
                         list.append(QString::fromUtf8(data.handshake().comp_method_showname(i).c_str()));
@@ -794,7 +774,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldTextValue:
                 {
                     QString list;
-                    for (int i=0; i < data.handshake().extension_size(); i++)
+                    for (int i=0; i < data.handshake().extension_showname_size(); i++)
                     {
                         list.append("\n   ");
                         list.append(data.handshake().extension_showname(i).c_str());
@@ -1028,6 +1008,39 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint length = value.toInt(&isOk);
             if(isOk)
                 data.mutable_handshake()->set_extensions_length(length);
+            break;
+        }
+        case ssl_handshake_certificatesLen:
+        {
+            uint length = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_certificates_length(length);
+            break;
+        }
+        case ssl_handshake_ciphersuite:
+        {
+            data.mutable_handshake()->clear_ciphersuite();
+            bool isOk;
+            QStringList list = value.toStringList();
+            for (const QString &st: list)
+            {
+                uint val = st.toInt(&isOk, 16);
+                if (isOk)
+                    data.mutable_handshake()->add_ciphersuite(val & 0xFFFF);
+            }
+            break;
+        }
+        case ssl_handshake_compMethod:
+        {
+            data.mutable_handshake()->clear_comp_method();
+            bool isOk;
+            QStringList list = value.toStringList();
+            for (const QString &st: list)
+            {
+                uint val = st.toInt(&isOk, 16);
+                if (isOk)
+                    data.mutable_handshake()->add_comp_method(val & 0xFF);
+            }
             break;
         }
         default:
