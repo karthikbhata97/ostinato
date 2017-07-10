@@ -190,6 +190,15 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
 
         }
 
+        // certificates
+        {
+            QStringList certificates = proto->fieldData(
+                        SslProtocol::ssl_handshake_certificate,
+                        AbstractProtocol::FieldValue).toStringList();
+
+            teCertificates->setPlainText(certificates.join("\n"));
+
+        }
 }
 
 /*!
@@ -315,6 +324,18 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
                 QStringList list = teExtensions->toPlainText().split('\n');
                 proto->setFieldData(
                     SslProtocol::ssl_handshake_extension,
+                    list);
+            }
+        }
+
+        // certificates
+        {
+            int handshakeType = getFieldValue(HandshakeProtocol, cbHandshakeType->currentIndex());
+            if (handshakeType == Certificate)
+            {
+                QStringList list = teCertificates->toPlainText().split('\n');
+                proto->setFieldData(
+                    SslProtocol::ssl_handshake_certificate,
                     list);
             }
         }

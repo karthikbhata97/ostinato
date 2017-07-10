@@ -811,7 +811,16 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldName:
                     return QString("Certificates");
                 case FieldValue:
-                    return "todo";
+                {
+                    QStringList list;
+                    for (int i=0; i < data.handshake().certificate_size(); i++)
+                    {
+                        QByteArray item;
+                        item.append(QString().fromStdString(data.handshake().certificate(i)));
+                        list.append(item.toHex());
+                    }
+                    return list;
+                }
                 case FieldTextValue:
                 {
                     QString list;
@@ -1063,6 +1072,20 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
                 QByteArray itemArray = QByteArray::fromHex(st.toLatin1());
                 std::string strItem(itemArray.constData(), itemArray.size());
                 data.mutable_handshake()->add_extension(strItem);
+            }
+            break;
+        }
+
+        case ssl_handshake_certificate:
+        {
+            data.mutable_handshake()->clear_certificate();
+            QStringList list = value.toStringList();
+
+            for (const QString &st: list)
+            {
+                QByteArray itemArray = QByteArray::fromHex(st.toLatin1());
+                std::string strItem(itemArray.constData(), itemArray.size());
+                data.mutable_handshake()->add_certificate(strItem);
             }
             break;
         }
