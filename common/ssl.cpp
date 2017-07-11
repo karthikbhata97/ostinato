@@ -68,8 +68,8 @@ QString SslProtocol::shortName() const
 /*!
   TODO Return the ProtocolIdType for your protocol \n
 
-  If your protocol doesn't have a protocolId field, you don't need to 
-  reimplement this method - the base class implementation will do the 
+  If your protocol doesn't have a protocolId field, you don't need to
+  reimplement this method - the base class implementation will do the
   right thing
 */
 
@@ -82,8 +82,8 @@ AbstractProtocol::ProtocolIdType SslProtocol::protocolIdType() const
 /*!
   TODO Return the protocolId for your protoocol based on the 'type' requested \n
 
-  If not all types are valid for your protocol, handle the valid type(s) 
-  and for the remaining fallback to the base class implementation; if your 
+  If not all types are valid for your protocol, handle the valid type(s)
+  and for the remaining fallback to the base class implementation; if your
   protocol doesn't have a protocolId at all, you don't need to reimplement
   this method - the base class will do the right thing
 */
@@ -114,7 +114,7 @@ int SslProtocol::fieldCount() const
 
   If your protocol has different sets of fields based on a OpCode/Type field
   (e.g. icmp), you MUST re-implement this function; however, if your protocol
-  has a fixed set of frame fields always, you don't need to reimplement this 
+  has a fixed set of frame fields always, you don't need to reimplement this
   method - the base class implementation will do the right thing
 */
 
@@ -166,7 +166,7 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         break;
 
         case ssl_handshake_version:
-            if(!data.has_handshake() || !data.handshake().has_version())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x01 || data.handshake().type() == 0x02) || !data.handshake().has_version())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
@@ -174,84 +174,84 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         break;
 
         case ssl_handshake_random:
-            if(!data.has_handshake() || !(data.handshake().has_random() || data.handshake().has_random_time()))
+            if(!data.has_handshake() || !(data.handshake().type() == 0x01 || data.handshake().type() == 0x02) || !(data.handshake().has_random() || data.handshake().has_random_time()))
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_sessionIdLen:
-            if(!data.has_handshake() || !data.handshake().has_session_id_length())
+            if(!data.has_handshake()|| !(data.handshake().type() == 0x01 || data.handshake().type() == 0x02) || !data.handshake().has_session_id_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_sessionId:
-            if(!data.has_handshake() || !data.handshake().has_session_id())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x01 || data.handshake().type() == 0x02) || !data.handshake().has_session_id())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_ciphersuitesLen:
-            if(!data.has_handshake() || !data.handshake().has_ciphersuites_length())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x01) || !data.handshake().has_ciphersuites_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_compMethodsLen:
-            if(!data.has_handshake() || !data.handshake().has_comp_methods_length())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x01) || !data.handshake().has_comp_methods_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_extensionsLen:
-            if(!data.has_handshake() || !data.handshake().has_extensions_length())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x01 || data.handshake().type() == 0x02) || !data.handshake().has_extensions_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_certificatesLen:
-            if(!data.has_handshake() || !data.handshake().has_certificates_length())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x0b) || !data.handshake().has_certificates_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_keyLen:
-            if(!data.has_handshake() || !data.handshake().has_key_length())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x10) || !data.handshake().has_key_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_key:
-            if(!data.has_handshake() || !data.handshake().has_key())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x10) || !data.handshake().has_key())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_ciphersuite:
-            if(!data.has_handshake() || !data.handshake().ciphersuite_size())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x01 || data.handshake().type() == 0x02) || !data.handshake().ciphersuite_size())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_compMethod:
-            if(!data.has_handshake() || !data.handshake().comp_method_size())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x01 || data.handshake().type() == 0x02) || !data.handshake().comp_method_size())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_extension:
-            if(!data.has_handshake() || !data.handshake().extension_size())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x01 || data.handshake().type() == 0x02) || !data.handshake().extension_size())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
@@ -272,7 +272,7 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
         }
         break;
         case ssl_handshake_certificate:
-        if(!data.handshake().certificate_size())
+        if(!data.has_handshake() || !(data.handshake().type() == 0x10) || !data.handshake().certificate_size())
         {
             flags &= ~FrameField;
             flags |= MetaField;
@@ -303,7 +303,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             int type = data.type() & 0xFF;
             switch(attrib)
             {
-                case FieldName:            
+                case FieldName:
                     return QString("Content Type");
                 case FieldValue:
                     return QString("%1").arg(type, 2, BASE_HEX, QChar('0'));;
@@ -330,7 +330,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
 
             switch(attrib)
             {
-                case FieldName:            
+                case FieldName:
                     return QString("Version");
                 case FieldValue:
                     return QString("%1").arg(version, 4, BASE_HEX, QChar('0'));
@@ -356,7 +356,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             int payload_length = data.payload_length() & 0xFFFF;
             switch(attrib)
             {
-                case FieldName:            
+                case FieldName:
                     return QString("Length");
                 case FieldValue:
                     return payload_length;
@@ -939,7 +939,7 @@ TODO: Edit this function to set the data for each field
 
 See AbstractProtocol::setFieldData() for more info
 */
-bool SslProtocol::setFieldData(int index, const QVariant &value, 
+bool SslProtocol::setFieldData(int index, const QVariant &value,
         FieldAttrib attrib)
 {
     bool isOk = false;
