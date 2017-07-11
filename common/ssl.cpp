@@ -888,7 +888,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             case FieldName:
                 return QString("Application Data");
             case FieldValue:
-                return appData;
+                return appData.toHex();
             case FieldTextValue:
                 return appData.toHex();
             case FieldFrameValue:
@@ -1137,6 +1137,14 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             QByteArray dataArray = QByteArray::fromHex(value.toString().toLatin1());
             std::string strData(dataArray.constData(), dataArray.size());
             data.mutable_handshake()->set_key(strData);
+            break;
+        }
+
+        case ssl_appData:
+        {
+            QByteArray dataArray = QByteArray::fromHex(value.toString().toLatin1());
+            std::string strData(dataArray.constData(), dataArray.size());
+            data.mutable_app_data()->set_data(strData);
             break;
         }
 

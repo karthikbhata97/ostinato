@@ -212,6 +212,15 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             AbstractProtocol::FieldValue
         ).toString());
 
+    // application data
+    {
+        teAppData->setPlainText(
+            proto->fieldData(
+                SslProtocol::ssl_appData,
+                AbstractProtocol::FieldValue
+            ).toString());
+    }
+
 }
 
 /*!
@@ -357,6 +366,7 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
             SslProtocol::ssl_handshake_keyLen,
             leClientKeyLen->text().toInt(&isOk, 10));
 
+        // client key
         {
             int handshakeType = getFieldValue(HandshakeProtocol, cbHandshakeType->currentIndex());
             if (handshakeType == ClientKeyExchange)
@@ -367,6 +377,14 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
             }
         }
 
+    }
+
+    // application data
+    if(cbSslType->currentIndex() == 3)
+    {
+        proto->setFieldData(
+            SslProtocol::ssl_appData,
+            teAppData->toPlainText());
     }
 
 }
