@@ -256,6 +256,17 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
 
     }
 
+    leSignLen->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_signatureLen,
+            AbstractProtocol::FieldValue
+        ).toString());
+    teSignature->setPlainText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_signature,
+            AbstractProtocol::FieldValue
+        ).toString());
+
 }
 
 /*!
@@ -445,6 +456,13 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
             }
         }
 
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_signatureLen,
+            leSignLen->text());
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_signature,
+            teSignature->toPlainText());
+
     }
 
     // application data
@@ -535,6 +553,10 @@ int SslConfigForm::getFieldValue(int field, int index)
         }
         case HandshakeProtocol:
         {
+        qDebug("indexKarthik");
+        qDebug() << index;
+        qDebug("index");
+
             switch (index)
             {
             case 0:
@@ -569,7 +591,6 @@ void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
     switch (index) {
     case 0:
     case 6:
-    case 7:
     case 9:
         swHandshake->setCurrentIndex(0);
         leHandshakeVersion->hide();
@@ -601,5 +622,10 @@ void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
     case 5:
         swHandshake->setCurrentIndex(4);
         leHandshakeVersion->hide();
-        labelHandshakeVersion->hide();    }
+        labelHandshakeVersion->hide();
+    case 7:
+        swHandshake->setCurrentIndex(5);
+        leHandshakeVersion->hide();
+        labelHandshakeVersion->hide();
+    }
 }

@@ -64,6 +64,7 @@ PdmlSslProtocol::PdmlSslProtocol()
     fieldMap_.insert("ssl.handshake.epms", OstProto::Ssl::Handshake::kKeyFieldNumber);
     fieldMap_.insert("ssl.handshake.cert_types_count", OstProto::Ssl::Handshake::kCertificateTypesCountFieldNumber);
     fieldMap_.insert("ssl.handshake.dnames_len", OstProto::Ssl::Handshake::kDistinguishedNamesLengthFieldNumber);
+    fieldMap_.insert("ssl.handshake.client_cert_vrfy.sig_len", OstProto::Ssl::Handshake::kSignatureLengthFieldNumber);
 
     // meta
     fieldMap_.insert("ssl.handshake.certificate_length", OstProto::Ssl::Handshake::kCertificateLengthFieldNumber);
@@ -312,6 +313,15 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
             std::string strData(dataArray.constData(), dataArray.size());
             handshake->set_distinguished_name(handshake->distinguished_name_size() - 1, strData);
         }
+    }
+
+    else if(name=="ssl.handshake.client_cert_vrfy.sig")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        QByteArray dataArray = QByteArray::fromHex(attributes.value("value").toLatin1());
+        std::string strData(dataArray.constData(), dataArray.size());
+        handshake->set_signature(strData);
+        handshake->set_signature_showname(strShowName);
     }
 
     return;

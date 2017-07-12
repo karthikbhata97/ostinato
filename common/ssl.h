@@ -64,6 +64,8 @@ public:
         ssl_handshake_certificateType,
         ssl_handshake_distinguishedNamesLen,
         ssl_handshake_distinguishedName,
+        ssl_handshake_signatureLen,
+        ssl_handshake_signature,
         ssl_appData,
 
         ssl_alert_message,
