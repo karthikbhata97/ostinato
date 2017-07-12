@@ -223,14 +223,14 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
             }
         break;
         case ssl_handshake_keyLen:
-            if(!data.has_handshake() || !(data.handshake().type() == 0x10) || !data.handshake().has_key_length())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x10 || data.handshake().type() == 0x0c) || !data.handshake().has_key_length())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
             }
         break;
         case ssl_handshake_key:
-            if(!data.has_handshake() || !(data.handshake().type() == 0x10) || !data.handshake().has_key())
+            if(!data.has_handshake() || !(data.handshake().type() == 0x10 || data.handshake().type() == 0x0c) || !data.handshake().has_key())
             {
                 flags &= ~FrameField;
                 flags |= MetaField;
@@ -694,7 +694,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             switch(attrib)
             {
                 case FieldName:
-                    return QString::fromUtf8(data.handshake().key_showname().c_str()).split(':')[0];
+                    return QString("Key Length");
                 case FieldValue:
                     return length;
                 case FieldTextValue:
@@ -720,7 +720,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             key.append(QString().fromStdString(data.handshake().key()));
             switch (attrib) {
             case FieldName:
-                return QString::fromUtf8(data.handshake().key_showname().c_str()).split(':')[0];
+                return QString("Key");
             case FieldValue:
                 return key.toHex();
             case FieldTextValue:

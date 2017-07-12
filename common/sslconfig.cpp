@@ -401,10 +401,10 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
             SslProtocol::ssl_handshake_keyLen,
             leClientKeyLen->text().toInt(&isOk, 10));
 
-        // client key
+        // key
         {
             int handshakeType = getFieldValue(HandshakeProtocol, cbHandshakeType->currentIndex());
-            if (handshakeType == ClientKeyExchange)
+            if (handshakeType == ClientKeyExchange || handshakeType == ServerKeyExchange)
             {
                 proto->setFieldData(
                     SslProtocol::ssl_handshake_key,
@@ -568,7 +568,6 @@ void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
 {
     switch (index) {
     case 0:
-    case 4:
     case 6:
     case 7:
     case 9:
@@ -593,6 +592,7 @@ void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
         leHandshakeVersion->hide();
         labelHandshakeVersion->hide();
         break;
+    case 4:
     case 8:
         swHandshake->setCurrentIndex(3);
         leHandshakeVersion->hide();
