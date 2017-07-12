@@ -290,6 +290,30 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
         handshake->add_certificate_type_showname(strShowName);
     }
 
+    else if(name=="ssl.handshake.dname")
+    {
+        // x509if.RDNSequence_item
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        QByteArray dataArray;
+        dataArray.append(QString().fromStdString(handshake->distinguished_name_length()));
+        std::string strData(dataArray.constData(), dataArray.size());
+        handshake->add_distinguished_name(strData);
+        handshake->add_distinguished_name_showname(strShowName);
+    }
+
+    else if(name=="x509if.RDNSequence_item")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        if(handshake->distinguished_name_size())
+        {
+            QByteArray dataArray;
+            dataArray.append(QString().fromStdString(handshake->distinguished_name(handshake->distinguished_name_size() - 1)));
+            dataArray.append(QByteArray::fromHex(attributes.value("value").toLatin1()));
+            std::string strData(dataArray.constData(), dataArray.size());
+            handshake->set_distinguished_name(handshake->distinguished_name_size() - 1, strData);
+        }
+    }
+
     return;
 }
 

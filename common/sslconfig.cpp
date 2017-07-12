@@ -246,6 +246,16 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
         }
     }
 
+    // distinguished name
+    {
+        QStringList distNames = proto->fieldData(
+                    SslProtocol::ssl_handshake_distinguishedName,
+                    AbstractProtocol::FieldValue).toStringList();
+
+        teDistNames->setPlainText(distNames.join("\n"));
+
+    }
+
 }
 
 /*!
@@ -421,6 +431,18 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
                     list);
             }
 
+        }
+
+        // distinguished names
+        {
+            int handshakeType = getFieldValue(HandshakeProtocol, cbHandshakeType->currentIndex());
+            if (handshakeType == CertificateRequest)
+            {
+                QStringList list = teDistNames->toPlainText().split('\n');
+                proto->setFieldData(
+                    SslProtocol::ssl_handshake_distinguishedName,
+                    list);
+            }
         }
 
     }

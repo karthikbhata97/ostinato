@@ -877,6 +877,29 @@
         </rect>
        </property>
       </widget>
+      <widget class="QTextEdit" name="teDistNames">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>60</y>
+         <width>104</width>
+         <height>111</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_29">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>60</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Distinguished Names</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>

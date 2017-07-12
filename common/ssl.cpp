@@ -299,7 +299,13 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
         break;
-
+        case ssl_handshake_distinguishedName:
+        if(!data.has_handshake() || !(data.handshake().type() == 0x0d) || !data.handshake().distinguished_name_size())
+        {
+            flags &= ~FrameField;
+            flags |= MetaField;
+        }
+        break;
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
@@ -1046,6 +1052,48 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             break;
         }
 
+
+    case ssl_handshake_distinguishedName:
+    {
+        switch (attrib) {
+            case FieldName:
+                return QString("Distinguished Names");
+            case FieldValue:
+            {
+                QStringList list;
+                for (int i=0; i < data.handshake().distinguished_name_size(); i++)
+                {
+                    QByteArray item;
+                    item.append(QString().fromStdString(data.handshake().distinguished_name(i)));
+                    list.append(item.toHex());
+                }
+                return list;
+            }
+            case FieldTextValue:
+            {
+                QString list;
+                for (int i=0; i < data.handshake().distinguished_name_showname_size(); i++)
+                {
+                    list.append("\n   ");
+                    list.append(data.handshake().distinguished_name_showname(i).c_str());
+                }
+                return list;
+            }
+            case FieldFrameValue:
+            {
+                QByteArray fv;
+                for (int i=0; i < data.handshake().distinguished_name_size(); i++)
+                {
+                    fv.append(QString().fromStdString(data.handshake().distinguished_name(i)));
+                }
+                return fv;
+            }
+            default:
+                break;
+        }
+        break;
+    }
+
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
@@ -1317,6 +1365,20 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             }
             break;
         }
+
+        case ssl_handshake_distinguishedName:
+        {
+            data.mutable_handshake()->clear_distinguished_name();
+            QStringList list = value.toStringList();
+            for (int i = 0; i < list.size(); i++)
+            {
+                QByteArray itemArray = QByteArray::fromHex(list.at(i).toLatin1());
+                std::string strItem(itemArray.constData(), itemArray.size());
+                data.mutable_handshake()->add_distinguished_name(strItem);
+            }
+            break;
+        }
+
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
