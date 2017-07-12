@@ -409,9 +409,7 @@ int SslConfigForm::getFieldIndex(int field, QString value)
             case AppData:
                 return 3;
             default:
-                qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
-                    index);
-                break;
+                return -1;
             }
             break;
         }
@@ -463,9 +461,7 @@ int SslConfigForm::getFieldValue(int field, int index)
             case 3:
                 return AppData;
             default:
-                qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
-                    index);
-                break;
+                return -1;
             }
             break;
         }

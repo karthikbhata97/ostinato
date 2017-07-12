@@ -1285,10 +1285,6 @@ QVariant SslProtocol::getName(int type, QVariant value)
         }
     }
     default:
-        qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
-            type);
-        break;
+        return QString("Invalid");
     }
-    return QString("Invalid");
-
 }
