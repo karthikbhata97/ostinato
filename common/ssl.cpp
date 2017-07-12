@@ -1074,9 +1074,9 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             data.mutable_handshake()->clear_ciphersuite();
             bool isOk;
             QStringList list = value.toStringList();
-            for (const QString &st: list)
+            for  (int i=0; i < list.size(); i++)
             {
-                uint val = st.toInt(&isOk, 16);
+                uint val = list.at(i).toInt(&isOk, 16);
                 if (isOk)
                     data.mutable_handshake()->add_ciphersuite(val & 0xFFFF);
             }
@@ -1087,9 +1087,9 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             data.mutable_handshake()->clear_comp_method();
             bool isOk;
             QStringList list = value.toStringList();
-            for (const QString &st: list)
+            for  (int i=0; i < list.size(); i++)
             {
-                uint val = st.toInt(&isOk, 16);
+                uint val = list.at(i).toInt(&isOk, 16);
                 if (isOk)
                     data.mutable_handshake()->add_comp_method(val & 0xFF);
             }
@@ -1101,9 +1101,9 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             data.mutable_handshake()->clear_extension();
             QStringList list = value.toStringList();
 
-            for (const QString &st: list)
+            for (int i = 0; i < list.size(); i++)
             {
-                QByteArray itemArray = QByteArray::fromHex(st.toLatin1());
+                QByteArray itemArray = QByteArray::fromHex(list.at(i).toLatin1());
                 std::string strItem(itemArray.constData(), itemArray.size());
                 data.mutable_handshake()->add_extension(strItem);
             }
@@ -1114,10 +1114,9 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
         {
             data.mutable_handshake()->clear_certificate();
             QStringList list = value.toStringList();
-
-            for (const QString &st: list)
+            for (int i = 0; i < list.size(); i++)
             {
-                QByteArray itemArray = QByteArray::fromHex(st.toLatin1());
+                QByteArray itemArray = QByteArray::fromHex(list.at(i).toLatin1());
                 std::string strItem(itemArray.constData(), itemArray.size());
                 data.mutable_handshake()->add_certificate(strItem);
             }
