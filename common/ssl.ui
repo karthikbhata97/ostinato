@@ -811,7 +811,7 @@
       <widget class="QLineEdit" name="leCertTypesCount">
        <property name="geometry">
         <rect>
-         <x>210</x>
+         <x>180</x>
          <y>20</y>
          <width>113</width>
          <height>28</height>
@@ -834,8 +834,8 @@
       <widget class="QLineEdit" name="leDistNamesLen">
        <property name="geometry">
         <rect>
-         <x>210</x>
-         <y>70</y>
+         <x>580</x>
+         <y>20</y>
          <width>113</width>
          <height>28</height>
         </rect>
@@ -844,14 +844,37 @@
       <widget class="QLabel" name="label_27">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>70</y>
+         <x>380</x>
+         <y>20</y>
          <width>191</width>
-         <height>20</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="text">
         <string>Distinguished Names Length</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_28">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>70</y>
+         <width>121</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Certificate Types</string>
+       </property>
+      </widget>
+      <widget class="QTextEdit" name="teCertTypes">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>70</y>
+         <width>104</width>
+         <height>111</height>
+        </rect>
        </property>
       </widget>
      </widget>

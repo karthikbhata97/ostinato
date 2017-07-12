@@ -62,6 +62,7 @@ public:
         ssl_handshake_key,
         ssl_handshake_certificateTypesCount,
         ssl_handshake_distinguishedNamesLen,
+        ssl_handshake_certificateType,
 
         ssl_appData,
 

@@ -292,6 +292,13 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
                 flags |= MetaField;
             }
         break;
+        case ssl_handshake_certificateType:
+            if(!data.has_handshake() || !(data.handshake().type() == 0x0d) || !data.handshake().certificate_type_size())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
 
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
@@ -954,7 +961,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 {
                     QByteArray fv;
                     fv.resize(1);
-                    qToBigEndian((quint16) count, (uchar*) fv.data());
+                    qToBigEndian((quint8) count, (uchar*) fv.data());
                     return fv;
                 }
                 case FieldBitSize:
@@ -987,6 +994,52 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 }
                 case FieldBitSize:
                     return 16;
+                default:
+                    break;
+            }
+            break;
+        }
+
+        case ssl_handshake_certificateType:
+        {
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString("Certificate Type");
+                case FieldValue:
+                {
+                    QStringList list;
+                    for (int i=0; i < data.handshake().certificate_type_size(); i++)
+                    {
+                        list.append(QString("%1").arg(data.handshake().certificate_type(i), 4, BASE_HEX, QChar('0')));
+                    }
+                    return list;
+                }
+                case FieldTextValue:
+                {
+                    QString list;
+                    for (int i=0; i < data.handshake().certificate_type_showname_size(); i++)
+                    {
+                        list.append("\n   ");
+                        list.append(QString::fromUtf8(data.handshake().certificate_type_showname(i).c_str()));
+                    }
+                    return list;
+                }
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    for (int i=0; i < data.handshake().certificate_type_size(); i++)
+                    {
+                        int certType = data.handshake().certificate_type(i) & 0xFF;
+                        QByteArray rv;
+                        rv.resize(1);
+                        qToBigEndian((quint8) certType, (uchar*) rv.data());
+                        fv.append(rv);
+                    }
+                    return fv;
+                }
+                case FieldBitSize:
+                    return data.handshake().certificate_type_size() * 8;
                 default:
                     break;
             }
@@ -1249,6 +1302,19 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint length = value.toInt(&isOk);
             if(isOk)
                 data.mutable_handshake()->set_distinguished_names_length(length);
+            break;
+        }
+        case ssl_handshake_certificateType:
+        {
+            data.mutable_handshake()->clear_certificate_type();
+            bool isOk;
+            QStringList list = value.toStringList();
+            for  (int i=0; i < list.size(); i++)
+            {
+                uint val = list.at(i).toInt(&isOk, 16);
+                if (isOk)
+                    data.mutable_handshake()->add_certificate_type(val & 0xFF);
+            }
             break;
         }
         default:

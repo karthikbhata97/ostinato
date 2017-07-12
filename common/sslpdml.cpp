@@ -283,6 +283,13 @@ void PdmlSslProtocol::unknownFieldHandler(QString name,
         handshake->add_certificate_showname(strShowName);
     }
 
+    else if(name=="ssl.handshake.cert_type")
+    {
+        OstProto::Ssl::Handshake *handshake = ssl->mutable_handshake();
+        handshake->add_certificate_type(attributes.value("value").toString().toInt(&isOk, kBaseHex));
+        handshake->add_certificate_type_showname(strShowName);
+    }
+
     return;
 }
 
