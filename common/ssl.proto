@@ -23,13 +23,6 @@ package OstProto;
 
 // Ssl Protocol
 
-message DistinguishedName {
-        optional uint32 length = 1;
-        optional string length_showname = 2;
-        optional bytes distinguishedname = 3;
-        optional string distinguishedname_showname = 4;
-}
-
 message Ssl {
         optional uint32 type = 1;
         optional string type_showname = 2;
@@ -81,14 +74,14 @@ message Ssl {
             optional string server_key_showname = 32;
 
 
-            optional uint32 certificate_types = 33;
-            optional string certificate_types_showname = 34;
+            optional uint32 certificate_types_count = 33;
+            optional string certificate_types_count_showname = 34;
             repeated uint32 certificate_type = 35;
             repeated string certificate_type_showname = 36;
             optional uint32 distinguished_names_length = 37;
             optional string distinguished_names_length_showname = 38;
-            repeated DistinguishedName distinguishedname = 39;
-            repeated string distinguishedname_showname = 40;
+            repeated bytes distinguished_name = 39;
+            repeated string distinguished_name_showname = 40;
 
             optional bytes sighed_hash = 41;
             optional string sighed_hash_showname = 42;
@@ -101,6 +94,9 @@ message Ssl {
             // meta
             optional bytes certificate_length = 47;
             optional string certificate_length_showname = 48;
+
+            optional bytes distinguished_name_length = 49;
+            optional string distinguished_name_length_showname = 50;
 
     }
 

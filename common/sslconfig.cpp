@@ -221,6 +221,18 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             ).toString());
     }
 
+    leCertTypesCount->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_certificateTypesCount,
+            AbstractProtocol::FieldValue
+        ).toString());
+
+    leDistNamesLen->setText(
+        proto->fieldData(
+            SslProtocol::ssl_handshake_distinguishedNamesLen,
+            AbstractProtocol::FieldValue
+        ).toString());
+
 }
 
 /*!
@@ -377,6 +389,14 @@ void SslConfigForm::storeWidget(AbstractProtocol *proto)
             }
         }
 
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_certificateTypesCount,
+            leCertTypesCount->text().toUInt(&isOk, 10));
+
+        proto->setFieldData(
+            SslProtocol::ssl_handshake_distinguishedNamesLen,
+            leDistNamesLen->text().toUInt(&isOk, 10));
+
     }
 
     // application data
@@ -501,7 +521,6 @@ void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
     switch (index) {
     case 0:
     case 4:
-    case 5:
     case 6:
     case 7:
     case 9:
@@ -531,5 +550,8 @@ void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
         leHandshakeVersion->hide();
         labelHandshakeVersion->hide();
         break;
-    }
+    case 5:
+        swHandshake->setCurrentIndex(4);
+        leHandshakeVersion->hide();
+        labelHandshakeVersion->hide();    }
 }

@@ -127,7 +127,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tabCCS">
     <attribute name="title">
@@ -347,7 +347,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="pgBlank"/>
      <widget class="QWidget" name="pgHello">
@@ -804,6 +804,54 @@
        </property>
        <property name="text">
         <string>Client Key Length</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="pgCertReq">
+      <widget class="QLineEdit" name="leCertTypesCount">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>20</y>
+         <width>113</width>
+         <height>28</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_26">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>161</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Certificate Types Count</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="leDistNamesLen">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>70</y>
+         <width>113</width>
+         <height>28</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_27">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>70</y>
+         <width>191</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Distinguished Names Length</string>
        </property>
       </widget>
      </widget>

@@ -278,6 +278,20 @@ AbstractProtocol::FieldFlags SslProtocol::fieldFlags(int index) const
             flags |= MetaField;
         }
         break;
+        case ssl_handshake_certificateTypesCount:
+            if(!data.has_handshake() || !(data.handshake().type() == 0x0d) || !data.handshake().has_certificate_types_count())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
+        case ssl_handshake_distinguishedNamesLen:
+            if(!data.has_handshake() || !(data.handshake().type() == 0x0d) || !data.handshake().has_distinguished_names_length())
+            {
+                flags &= ~FrameField;
+                flags |= MetaField;
+            }
+        break;
 
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
@@ -924,6 +938,60 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
             break;
         }
 
+        case ssl_handshake_certificateTypesCount:
+        {
+            int count = data.handshake().certificate_types_count() & 0xFF;
+
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString("Certificate Types Count");
+                case FieldValue:
+                    return count;
+                case FieldTextValue:
+                    return QString("%1").arg(count);
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    fv.resize(1);
+                    qToBigEndian((quint16) count, (uchar*) fv.data());
+                    return fv;
+                }
+                case FieldBitSize:
+                    return 8;
+                default:
+                    break;
+            }
+            break;
+        }
+
+
+        case ssl_handshake_distinguishedNamesLen:
+        {
+            int length = data.handshake().distinguished_names_length() & 0xFFFF;
+
+            switch(attrib)
+            {
+                case FieldName:
+                    return QString("Distinguished Names Length");
+                case FieldValue:
+                    return length;
+                case FieldTextValue:
+                    return QString("%1").arg(length);
+                case FieldFrameValue:
+                {
+                    QByteArray fv;
+                    fv.resize(2);
+                    qToBigEndian((quint16) length, (uchar*) fv.data());
+                    return fv;
+                }
+                case FieldBitSize:
+                    return 16;
+                default:
+                    break;
+            }
+            break;
+        }
 
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
@@ -1168,6 +1236,21 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             break;
         }
 
+        case ssl_handshake_certificateTypesCount:
+        {
+            uint count = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_certificate_types_count(count);
+            break;
+        }
+
+        case ssl_handshake_distinguishedNamesLen:
+        {
+            uint length = value.toInt(&isOk);
+            if(isOk)
+                data.mutable_handshake()->set_distinguished_names_length(length);
+            break;
+        }
         default:
             qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
                 index);
