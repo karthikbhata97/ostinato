@@ -954,8 +954,11 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint type = value.toUInt(&isOk);
             if (isOk)
                 data.set_type(type);
-// Doesn't help but crashed! Probably a dirty bit is set on updated values and updates are mirrored
-// where as the meta fields are found only once!
+
+            QString showname = getName(sslType, type).toString();
+            QByteArray byteArrayShowName = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
+            std::string strShowName = std::string(byteArrayShowName.constData(), byteArrayShowName.size());
+            data.set_type_showname(strShowName);
 
             if(type != 0x14)
                 data.clear_change_cipher_spec();
@@ -973,6 +976,12 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint version = value.toUInt(&isOk);
             if (isOk)
                 data.set_version(version);
+
+            QString showname = getName(SslProtocol::version, version).toString();
+            QByteArray byteArrayShowName = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
+            std::string strShowName = std::string(byteArrayShowName.constData(), byteArrayShowName.size());
+            data.set_version_showname(strShowName);
+
             break;
         }
         case ssl_payloadLength:
@@ -999,6 +1008,12 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint type = value.toInt(&isOk);
             if(isOk)
                 data.mutable_handshake()->set_type(type);
+
+            QString showname = getName(handshakeType, type).toString();
+            QByteArray byteArrayShowName = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
+            std::string strShowName = std::string(byteArrayShowName.constData(), byteArrayShowName.size());
+            data.mutable_handshake()->set_type_showname(strShowName);
+
             break;
         }
         case ssl_handshake_length:
@@ -1013,6 +1028,12 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
             uint version = value.toInt(&isOk);
             if(isOk)
                 data.mutable_handshake()->set_version(version);
+
+            QString showname = getName(SslProtocol::version, version).toString();
+            QByteArray byteArrayShowName = QByteArray::fromRawData(showname.toUtf8(), showname.toUtf8().size());
+            std::string strShowName = std::string(byteArrayShowName.constData(), byteArrayShowName.size());
+            data.mutable_handshake()->set_version_showname(strShowName);
+
             break;
         }
         case ssl_handshake_random:
@@ -1189,4 +1210,85 @@ bool SslProtocol::isProtocolFrameSizeVariable() const
 int SslProtocol::protocolFrameVariableCount() const
 {
     return AbstractProtocol::protocolFrameVariableCount();
+}
+
+/*
+    Show names!
+*/
+
+QVariant SslProtocol::getName(int type, QVariant value)
+{
+    bool isOk;
+
+    switch (type)
+    {
+    case version:
+    {
+        int index = value.toInt(&isOk);
+        if(!isOk)
+            return QString("Invalid");
+        switch (index)
+        {
+            case 0x0300:
+                return QString("SSL 3.0");
+            case 0x0301:
+                return QString("TLS 1.0");
+            case 0x0302:
+                return QString("SSL 1.1");
+            case 0x0303:
+                return QString("TLS 1.2");
+        }
+    }
+    case sslType:
+    {
+        int index = value.toInt(&isOk);
+        if(!isOk)
+            return QString("Invalid");
+        switch (index) {
+            case 0x14:
+                return QString("Change Cipher Spec");
+        case 0x15:
+            return QString("Alert");
+        case 0x16:
+            return QString("Handshake");
+        case 0x17:
+            return QString("Application Data");
+        }
+    }
+    case handshakeType:
+    {
+        int index = value.toInt(&isOk);
+        if(!isOk)
+            return QString("Invalid");
+        switch (index)
+        {
+        case 0x00:
+            return QString("HELLO_REQUEST");
+        case 0x01:
+            return QString("CLIENT_HELLO");
+        case 0x02:
+            return QString("SERVER_HELLO");
+        case 0x0b:
+            return QString("CERTIFICATE");
+        case 0x0c:
+            return QString("SERVER_KEY_EXCHANGE");
+        case 0x0d:
+            return QString("CERTIFICATE_REQUEST");
+        case 0x0e:
+            return QString("SERVER_DONE");
+        case 0x0f:
+            return QString("CERTIFICATE_VERIFY");
+        case 0x10:
+            return QString("CLIENT_KEY_EXCHANGE");
+        case 0x14:
+            return QString("FINISHED");
+        }
+    }
+    default:
+        qFatal("%s: unimplemented case %d in switch", __PRETTY_FUNCTION__,
+            type);
+        break;
+    }
+    return QString("Invalid");
+
 }

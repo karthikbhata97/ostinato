@@ -98,6 +98,16 @@ public:
     virtual bool isProtocolFrameSizeVariable() const;
     virtual int protocolFrameVariableCount() const;
 
+    QVariant getName(int type, QVariant value);
+
+    enum FieldType
+    {
+        version,
+        sslType,
+        handshakeType
+    };
+
+
 private:
     OstProto::Ssl    data;
 };
