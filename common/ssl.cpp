@@ -1518,7 +1518,7 @@ QVariant SslProtocol::getName(int type, QVariant value)
             case 0x0301:
                 return QString("TLS 1.0");
             case 0x0302:
-                return QString("SSL 1.1");
+                return QString("TLS 1.1");
             case 0x0303:
                 return QString("TLS 1.2");
         }
@@ -1529,8 +1529,8 @@ QVariant SslProtocol::getName(int type, QVariant value)
         if(!isOk)
             return QString("Invalid");
         switch (index) {
-            case 0x14:
-                return QString("Change Cipher Spec");
+        case 0x14:
+            return QString("Change Cipher Spec");
         case 0x15:
             return QString("Alert");
         case 0x16:
