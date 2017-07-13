@@ -153,12 +153,12 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             QStringList ciphersuites = proto->fieldData(SslProtocol::ssl_handshake_ciphersuite,
                                                         AbstractProtocol::FieldValue).toStringList();
 
-            if(handshakeType == ClientHello)
+            qDebug("this shit");
+            qDebug() << ciphersuites;
+            if(handshakeType == ClientHello || handshakeType == ServerHello)
             {
                 teCipherSuites->setPlainText(ciphersuites.join("\n"));
-            }
-            else if (handshakeType == ServerHello)
-            {
+
                 leSHelloCipher->setText(ciphersuites[0]);
             }
         }
@@ -169,12 +169,12 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
                                              AbstractProtocol::FieldValue).toString().toInt(&isOk, 16);
             QStringList compMethods = proto->fieldData(SslProtocol::ssl_handshake_compMethod,
                                                    AbstractProtocol::FieldValue).toStringList();
-            if(handshakeType == ClientHello)
+
+            qDebug("That shit");
+            if(handshakeType == ClientHello || handshakeType == ServerHello)
             {
                 teCompMethods->setPlainText(compMethods.join("\n"));
-            }
-            else if (handshakeType == ServerHello)
-            {
+
                 leSHelloComp->setText(compMethods[0]);
             }
 
