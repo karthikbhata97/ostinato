@@ -553,10 +553,6 @@ int SslConfigForm::getFieldValue(int field, int index)
         }
         case HandshakeProtocol:
         {
-        qDebug("indexKarthik");
-        qDebug() << index;
-        qDebug("index");
-
             switch (index)
             {
             case 0:

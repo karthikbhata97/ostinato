@@ -347,7 +347,7 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                 case FieldName:
                     return QString("Content Type");
                 case FieldValue:
-                    return QString("%1").arg(type, 2, BASE_HEX, QChar('0'));;
+                    return QString("%1").arg(type, 2, BASE_HEX, QChar('0'));
                 case FieldTextValue:
                     return QString("%1 (%2)").arg(type, 4, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.type_showname().c_str()));
                 case FieldFrameValue:
@@ -448,17 +448,12 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
         case ssl_handshake_type:
         {
             int type = data.handshake().type() & 0xFF;
-            qDebug() << type;
-            qDebug("TypeK");
-
             switch(attrib)
             {
                 case FieldName:
                     return QString("Handshake Type");
                 case FieldValue:
-                qDebug() << type;
-                qDebug("TypeK");
-                    return type;
+                return QString("%1").arg(type, 2, BASE_HEX, QChar('0'));
                 case FieldTextValue:
                     return QString("%1 (%2)").arg(type, 2, BASE_HEX, QChar('0')).arg(QString::fromUtf8(data.handshake().type_showname().c_str()));
                 case FieldFrameValue:
