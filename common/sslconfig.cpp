@@ -44,6 +44,8 @@ See AbstractProtocolConfigForm::loadWidget() for more info
 */
 void SslConfigForm::loadWidget(AbstractProtocol *proto)
 {
+    revert = proto;
+
     bool isOk;
 
     leSslVersion->setText(
@@ -584,6 +586,19 @@ int SslConfigForm::getFieldValue(int field, int index)
 
 void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
 {
+
+    leHandshakeLen->setText(
+            revert->fieldData(
+                    SslProtocol::ssl_handshake_length,
+                    AbstractProtocol::FieldValue
+            ).toString());
+
+    leHandshakeVersion->setText(
+            revert->fieldData(
+                    SslProtocol::ssl_handshake_version,
+                    AbstractProtocol::FieldValue
+            ).toString());
+
     switch (index) {
     case 0:
     case 6:
@@ -624,4 +639,20 @@ void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
         leHandshakeVersion->hide();
         labelHandshakeVersion->hide();
     }
+
+}
+
+void SslConfigForm::on_cbSslType_currentIndexChanged(int /*index*/)
+{
+    leSslVersion->setText(
+        revert->fieldData(
+            SslProtocol::ssl_version,
+            AbstractProtocol::FieldValue
+        ).toString());
+
+    leSslPayloadLength->setText(
+        revert->fieldData(
+            SslProtocol::ssl_payloadLength,
+            AbstractProtocol::FieldValue
+        ).toString());
 }

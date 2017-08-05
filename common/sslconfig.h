@@ -57,6 +57,8 @@ public:
         Finished = 0x14
     };
 
+    AbstractProtocol *revert;
+
     static SslConfigForm* createInstance();
 
     virtual void loadWidget(AbstractProtocol *proto);
@@ -66,6 +68,7 @@ public:
 
 private slots:
     void on_cbHandshakeType_currentIndexChanged(int index);
+    void on_cbSslType_currentIndexChanged(int index);
 };
 
 #endif
