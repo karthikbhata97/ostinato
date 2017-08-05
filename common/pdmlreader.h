@@ -48,6 +48,7 @@ private:
     void readPdml();
     void readPacket();
     void readProto();
+    void readProtoSsl();
     void readField(PdmlProtocol *pdmlProto, 
             OstProto::Protocol *pbProto);
 

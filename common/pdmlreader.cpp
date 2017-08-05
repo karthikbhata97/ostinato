@@ -245,6 +245,8 @@ void PdmlReader::readPacket()
         {
             if (skipUntilEnd_)
                 skipElement();
+            else if (name() == "proto" && attributes().value("name").toString() == "ssl")
+                readProtoSsl();
             else if (name() == "proto")
                 readProto();
             else if (name() == "field")
@@ -550,3 +552,184 @@ PdmlProtocol* PdmlReader::appendPdmlProto(const QString &protoName,
 
     return pdmlProto;
 }
+
+void PdmlReader::readProtoSsl()
+{
+    PdmlProtocol *pdmlProto = NULL;
+    OstProto::Protocol *pbProto = NULL;
+
+    Q_ASSERT(isStartElement() && name() == "proto");
+
+    QString protoName;
+    int pos = -1;
+    int size = -1;
+
+    if (!attributes().value("name").isEmpty())
+        protoName = attributes().value("name").toString();
+    if (!attributes().value("pos").isEmpty())
+        pos = attributes().value("pos").toString().toInt();
+    if (!attributes().value("size").isEmpty())
+        size = attributes().value("size").toString().toInt();
+
+    qDebug("proto: %s, pos = %d, expPos_ = %d, size = %d",
+            protoName.toAscii().constData(), pos, expPos_, size);
+
+    // This is a heuristic to skip protocols which are not part of
+    // this frame, but of a reassembled segment spanning several frames
+    //   1. Proto starting pos is 0, but we've already seen some protocols
+    //   2. Protocol Size exceeds frame length
+    if (((pos == 0) && (currentStream_->protocol_size() > 0))
+        || ((pos + size) > int(currentStream_->core().frame_len())))
+    {
+        skipElement();
+        return;
+    }
+
+    if (isDontCareProto())
+    {
+        skipElement();
+        return;
+    }
+
+    // if we detect a gap between subsequent protocols, we "fill-in"
+    // with a "hexdump" from the pcap
+    if (pos > expPos_ && pcap_)
+    {
+        appendHexDumpProto(expPos_, pos - expPos_);
+        expPos_ = pos;
+    }
+
+    // for unknown protocol, read a hexdump from the pcap
+    if (!factory_.contains(protoName) && pcap_)
+    {
+        int size = -1;
+
+        if (!attributes().value("size").isEmpty())
+            size = attributes().value("size").toString().toInt();
+
+        // Check if this proto is a subset of previous proto - if so, do nothing
+        if ((pos >= 0) && (size > 0) && ((pos + size) <= expPos_))
+        {
+            qDebug("subset proto");
+            skipElement();
+            return;
+        }
+
+        if (pos >= 0 && size > 0
+                && ((pos + size) <= pktBuf_.size()))
+        {
+            appendHexDumpProto(pos, size);
+            expPos_ += size;
+
+            skipElement();
+            return;
+        }
+    }
+
+    while (!atEnd())
+    {
+        readNext();
+
+        if (isEndElement())
+            break;
+
+        if (isStartElement())
+        {
+            if (name() == "proto")
+            {
+                // an embedded proto
+                qDebug("embedded proto: %s\n", attributes().value("name")
+                        .toString().toAscii().constData());
+
+                if (isDontCareProto())
+                {
+                    skipElement();
+                    continue;
+                }
+
+                // if we are in the midst of processing a protocol, we
+                // end it prematurely before we start processing the
+                // embedded protocol
+                //
+                // XXX: pdmlProto may be NULL for a sequence of embedded protos
+                if (pdmlProto)
+                {
+                    int endPos = -1;
+
+                    if (!attributes().value("pos").isEmpty())
+                        endPos = attributes().value("pos").toString().toInt();
+
+                    pdmlProto->prematureEndHandler(endPos, pbProto,
+                            currentStream_);
+                    pdmlProto->postProtocolHandler(pbProto, currentStream_);
+
+                    StreamBase s;
+                    s.protoDataCopyFrom(*currentStream_);
+                    expPos_ = s.frameProtocolLength(0);
+                }
+
+                readProto();
+
+                pdmlProto = NULL;
+                pbProto = NULL;
+            }
+            else if (name() == "field")
+            {
+                if (attributes().value("name") == "ssl.record")
+                {
+                    if (pdmlProto)
+                        {
+                            pdmlProto->postProtocolHandler(pbProto, currentStream_);
+                            freePdmlProtocol(pdmlProto);
+
+                            StreamBase s;
+                            s.protoDataCopyFrom(*currentStream_);
+                            expPos_ = s.frameProtocolLength(0);
+                        }
+                    pdmlProto = appendPdmlProto(protoName, &pbProto);
+
+                    qDebug("%s: preProtocolHandler(expPos = %d)",
+                            protoName.toAscii().constData(), expPos_);
+                    pdmlProto->preProtocolHandler(protoName, attributes(), expPos_, pbProto,
+                            currentStream_);
+                }
+
+                if ((protoName == "fake-field-wrapper") &&
+                        (attributes().value("name") == "tcp.segments"))
+                {
+                    skipElement();
+                    qDebug("[skipping reassembled tcp segments]");
+
+                    skipUntilEnd_ = true;
+                    continue;
+                }
+
+                if (pdmlProto == NULL)
+                {
+                    pdmlProto = appendPdmlProto(protoName, &pbProto);
+
+                    qDebug("%s: preProtocolHandler(expPos = %d)",
+                            protoName.toAscii().constData(), expPos_);
+                    pdmlProto->preProtocolHandler(protoName, attributes(),
+                            expPos_, pbProto, currentStream_);
+                }
+
+                readField(pdmlProto, pbProto);
+            }
+            else
+                skipElement();
+        }
+    }
+
+    // Close-off current protocol
+    if (pdmlProto)
+    {
+        pdmlProto->postProtocolHandler(pbProto, currentStream_);
+        freePdmlProtocol(pdmlProto);
+
+        StreamBase s;
+        s.protoDataCopyFrom(*currentStream_);
+        expPos_ = s.frameProtocolLength(0);
+    }
+}
+
