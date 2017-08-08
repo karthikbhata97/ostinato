@@ -6,983 +6,638 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>729</width>
-    <height>440</height>
+    <width>700</width>
+    <height>335</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLineEdit" name="leSslPayloadLength">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>311</x>
-     <y>35</y>
-     <width>125</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lbLength">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>35</y>
-     <width>45</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Length</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-   <property name="buddy">
-    <cstring>leSslPayloadLength</cstring>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_24">
-   <property name="geometry">
-    <rect>
-     <x>455</x>
-     <y>35</y>
-     <width>49</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Version</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="leSslVersion">
-   <property name="geometry">
-    <rect>
-     <x>510</x>
-     <y>35</y>
-     <width>125</width>
-     <height>28</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="cbSslType">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>30</y>
-     <width>161</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>Change Cipher Spec</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Alert</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Handshake</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Application Data</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QLabel" name="label_8">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>29</y>
-     <width>63</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Type</string>
-   </property>
-  </widget>
-  <widget class="QTabWidget" name="tabWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>711</width>
-     <height>361</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>2</number>
-   </property>
-   <widget class="QWidget" name="tabCCS">
-    <attribute name="title">
-     <string>Change Cipher Spec</string>
-    </attribute>
-    <widget class="QLineEdit" name="leCCS">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>20</y>
-       <width>51</width>
-       <height>28</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>01</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>19</y>
-       <width>131</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Change Cipher Spec</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tabAlert">
-    <attribute name="title">
-     <string>Alert</string>
-    </attribute>
-    <widget class="QLineEdit" name="leAlertSeverity">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>30</y>
-       <width>51</width>
-       <height>28</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="leAlertDescription">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>70</y>
-       <width>51</width>
-       <height>28</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>29</y>
-       <width>63</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Severity</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>70</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Description</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tabHandshake">
-    <attribute name="title">
-     <string>Handshake</string>
-    </attribute>
-    <widget class="QComboBox" name="cbHandshakeType">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>10</y>
-       <width>131</width>
-       <height>28</height>
-      </rect>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <item>
-      <property name="text">
-       <string>HelloRequest</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>ClientHello</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>ServerHello</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Certificate</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>ServerKeyExchange</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>CertificateRequest</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>ServerHelloDone</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>CertificateVerify</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>ClientKeyExchange</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Finished</string>
-      </property>
-     </item>
-    </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>9</y>
-       <width>63</width>
-       <height>31</height>
-      </rect>
-     </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_8">
      <property name="text">
       <string>Type</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="leHandshakeLen">
-     <property name="geometry">
-      <rect>
-       <x>300</x>
-       <y>10</y>
-       <width>113</width>
-       <height>28</height>
-      </rect>
-     </property>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="cbSslType">
+     <item>
+      <property name="text">
+       <string>Change Cipher Spec</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Alert</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Handshake</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Application Data</string>
+      </property>
+     </item>
     </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>230</x>
-       <y>10</y>
-       <width>63</width>
-       <height>20</height>
-      </rect>
-     </property>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="lbLength">
      <property name="text">
       <string>Length</string>
      </property>
-    </widget>
-    <widget class="QLineEdit" name="leHandshakeVersion">
-     <property name="geometry">
-      <rect>
-       <x>540</x>
-       <y>10</y>
-       <width>113</width>
-       <height>28</height>
-      </rect>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buddy">
+      <cstring>leSslPayloadLength</cstring>
      </property>
     </widget>
-    <widget class="QLabel" name="labelHandshakeVersion">
-     <property name="geometry">
-      <rect>
-       <x>470</x>
-       <y>10</y>
-       <width>63</width>
-       <height>20</height>
-      </rect>
+   </item>
+   <item row="0" column="5">
+    <widget class="QLineEdit" name="leSslVersion"/>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLineEdit" name="leSslPayloadLength">
+     <property name="enabled">
+      <bool>true</bool>
      </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="QLabel" name="label_24">
      <property name="text">
       <string>Version</string>
      </property>
-    </widget>
-    <widget class="QStackedWidget" name="swHandshake">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>40</y>
-       <width>711</width>
-       <height>291</height>
-      </rect>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="6">
+    <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>3</number>
      </property>
-     <widget class="QWidget" name="pgBlank"/>
-     <widget class="QWidget" name="pgHello">
-      <widget class="QWidget" name="widget" native="true">
-       <property name="geometry">
-        <rect>
-         <x>230</x>
-         <y>10</y>
-         <width>261</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <widget class="QLabel" name="label_12">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>81</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Session ID</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_11">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>121</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Session ID Length</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="leSessionIDLen">
-        <property name="geometry">
-         <rect>
-          <x>142</x>
-          <y>10</y>
-          <width>71</width>
-          <height>28</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="leSessionID">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>50</y>
-          <width>151</width>
-          <height>28</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="wRandom" native="true">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>221</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <widget class="QLabel" name="label_7">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>63</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Random</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_9">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Time:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_10">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>60</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Bytes:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="leRandomTime">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>20</y>
-          <width>113</width>
-          <height>28</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="leRandomBytes">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>60</y>
-          <width>113</width>
-          <height>28</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="wExtension" native="true">
-       <property name="geometry">
-        <rect>
-         <x>490</x>
-         <y>10</y>
-         <width>211</width>
-         <height>261</height>
-        </rect>
-       </property>
-       <widget class="QLabel" name="label_17">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>111</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Extensions</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="leExtensionsLen">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>30</y>
-          <width>71</width>
-          <height>28</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_18">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>40</y>
-          <width>63</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Length</string>
-        </property>
-       </widget>
-       <widget class="QTextEdit" name="teExtensions">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>80</y>
-          <width>171</width>
-          <height>171</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QStackedWidget" name="swHello">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>100</y>
-         <width>481</width>
-         <height>171</height>
-        </rect>
-       </property>
-       <property name="currentIndex">
-        <number>1</number>
-       </property>
-       <widget class="QWidget" name="pgCHello">
-        <widget class="QWidget" name="wCompression" native="true">
-         <property name="geometry">
-          <rect>
-           <x>220</x>
-           <y>0</y>
-           <width>181</width>
-           <height>161</height>
-          </rect>
-         </property>
-         <widget class="QLabel" name="label_15">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>141</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Compression Method</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="leCompressionLength">
-          <property name="geometry">
-           <rect>
-            <x>62</x>
-            <y>30</y>
-            <width>91</width>
-            <height>28</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_16">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>30</y>
-            <width>63</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Length</string>
-          </property>
-         </widget>
-         <widget class="QTextEdit" name="teCompMethods">
-          <property name="geometry">
-           <rect>
-            <x>60</x>
-            <y>70</y>
-            <width>101</width>
-            <height>81</height>
-           </rect>
-          </property>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="wCipher" native="true">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>221</width>
-           <height>161</height>
-          </rect>
-         </property>
-         <widget class="QLabel" name="label_13">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>0</y>
-            <width>91</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Ciphersuites</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="leCipherSuitesLen">
-          <property name="geometry">
-           <rect>
-            <x>72</x>
-            <y>30</y>
-            <width>81</width>
-            <height>28</height>
-           </rect>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_14">
-          <property name="geometry">
-           <rect>
-            <x>12</x>
-            <y>30</y>
-            <width>61</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Length</string>
-          </property>
-         </widget>
-         <widget class="QTextEdit" name="teCipherSuites">
-          <property name="geometry">
-           <rect>
-            <x>50</x>
-            <y>69</y>
-            <width>121</width>
-            <height>81</height>
-           </rect>
-          </property>
-         </widget>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="pgSHello">
-        <widget class="QLineEdit" name="leSHelloCipher">
-         <property name="geometry">
-          <rect>
-           <x>110</x>
-           <y>10</y>
-           <width>113</width>
-           <height>28</height>
-          </rect>
+     <widget class="QWidget" name="tabCCS">
+      <attribute name="title">
+       <string>Change Cipher Spec</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_16">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Change Cipher Spec</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="leSHelloComp">
-         <property name="geometry">
-          <rect>
-           <x>110</x>
-           <y>60</y>
-           <width>113</width>
-           <height>28</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_19">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>111</width>
-           <height>31</height>
-          </rect>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="leCCS">
+         <property name="enabled">
+          <bool>false</bool>
          </property>
          <property name="text">
-          <string>Cipher Suite</string>
+          <string>01</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_20">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>49</y>
-           <width>63</width>
-           <height>31</height>
-          </rect>
-         </property>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabAlert">
+      <attribute name="title">
+       <string>Alert</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_15">
+       <item row="0" column="0">
+        <widget class="QWidget" name="widget_3" native="true">
+         <layout class="QGridLayout" name="gridLayout_14">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Severity</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="leAlertSeverity"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Description</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="leAlertDescription"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabHandshake">
+      <attribute name="title">
+       <string>Handshake</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Compression Method</string>
+          <string>Type</string>
          </property>
         </widget>
-       </widget>
-      </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="cbHandshakeType">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>HelloRequest</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ClientHello</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ServerHello</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Certificate</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ServerKeyExchange</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>CertificateRequest</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ServerHelloDone</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>CertificateVerify</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ClientKeyExchange</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Finished</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Length</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLineEdit" name="leHandshakeLen"/>
+       </item>
+       <item row="0" column="4">
+        <widget class="QLabel" name="labelHandshakeVersion">
+         <property name="text">
+          <string>Version</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QLineEdit" name="leHandshakeVersion"/>
+       </item>
+       <item row="1" column="0" colspan="6">
+        <widget class="QStackedWidget" name="swHandshake">
+         <property name="currentIndex">
+          <number>3</number>
+         </property>
+         <widget class="QWidget" name="pgBlank"/>
+         <widget class="QWidget" name="pgHello">
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="0" column="0">
+            <widget class="QWidget" name="wRandom" native="true">
+             <layout class="QGridLayout" name="gridLayout_4">
+              <item row="0" column="0" colspan="2">
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>Random</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_9">
+                <property name="text">
+                 <string>Time:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="leRandomTime">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_10">
+                <property name="text">
+                 <string>Bytes:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="leRandomBytes"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QWidget" name="widget" native="true">
+             <layout class="QGridLayout" name="gridLayout_6">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_11">
+                <property name="text">
+                 <string>Session ID Length</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="leSessionIDLen"/>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_12">
+                <property name="text">
+                 <string>Session ID</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="leSessionID"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="2" rowspan="2">
+            <widget class="QWidget" name="wExtension" native="true">
+             <layout class="QGridLayout" name="gridLayout_7">
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_18">
+                <property name="text">
+                 <string>Length</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="leExtensionsLen"/>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QTextEdit" name="teExtensions"/>
+              </item>
+              <item row="0" column="0" colspan="2">
+               <widget class="QLabel" name="label_17">
+                <property name="text">
+                 <string>Extensions</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QStackedWidget" name="swHello">
+             <property name="currentIndex">
+              <number>1</number>
+             </property>
+             <widget class="QWidget" name="pgCHello">
+              <widget class="QWidget" name="wCompression" native="true">
+               <property name="geometry">
+                <rect>
+                 <x>220</x>
+                 <y>0</y>
+                 <width>181</width>
+                 <height>161</height>
+                </rect>
+               </property>
+               <widget class="QLabel" name="label_15">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>141</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Compression Method</string>
+                </property>
+               </widget>
+               <widget class="QLineEdit" name="leCompressionLength">
+                <property name="geometry">
+                 <rect>
+                  <x>62</x>
+                  <y>30</y>
+                  <width>91</width>
+                  <height>28</height>
+                 </rect>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_16">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>30</y>
+                  <width>63</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Length</string>
+                </property>
+               </widget>
+               <widget class="QTextEdit" name="teCompMethods">
+                <property name="geometry">
+                 <rect>
+                  <x>60</x>
+                  <y>70</y>
+                  <width>101</width>
+                  <height>81</height>
+                 </rect>
+                </property>
+               </widget>
+              </widget>
+              <widget class="QWidget" name="wCipher" native="true">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>221</width>
+                 <height>161</height>
+                </rect>
+               </property>
+               <widget class="QLabel" name="label_13">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>0</y>
+                  <width>91</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Ciphersuites</string>
+                </property>
+               </widget>
+               <widget class="QLineEdit" name="leCipherSuitesLen">
+                <property name="geometry">
+                 <rect>
+                  <x>72</x>
+                  <y>30</y>
+                  <width>81</width>
+                  <height>28</height>
+                 </rect>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_14">
+                <property name="geometry">
+                 <rect>
+                  <x>12</x>
+                  <y>30</y>
+                  <width>61</width>
+                  <height>20</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Length</string>
+                </property>
+               </widget>
+               <widget class="QTextEdit" name="teCipherSuites">
+                <property name="geometry">
+                 <rect>
+                  <x>50</x>
+                  <y>69</y>
+                  <width>121</width>
+                  <height>81</height>
+                 </rect>
+                </property>
+               </widget>
+              </widget>
+             </widget>
+             <widget class="QWidget" name="pgSHello">
+              <layout class="QGridLayout" name="gridLayout_5">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_19">
+                 <property name="text">
+                  <string>Cipher Suite</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="leSHelloCipher"/>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_20">
+                 <property name="text">
+                  <string>Compression Method</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="leSHelloComp"/>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="pgCert">
+          <layout class="QGridLayout" name="gridLayout_9">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_21">
+             <property name="text">
+              <string>Certificates Length</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="leCertLen"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_22">
+             <property name="text">
+              <string>Certificates</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QTextEdit" name="teCertificates"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="pgCKEx">
+          <layout class="QGridLayout" name="gridLayout_10">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_23">
+             <property name="text">
+              <string>Key Length</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="leClientKeyLen"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_25">
+             <property name="text">
+              <string>Key</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QTextEdit" name="teClientKey"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="pgCertReq">
+          <widget class="QWidget" name="wCertType" native="true">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>321</width>
+             <height>191</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_11">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_26">
+              <property name="text">
+               <string>Certificate Types Count</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="leCertTypesCount"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_28">
+              <property name="text">
+               <string>Certificate Types</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QTextEdit" name="teCertTypes"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="widget_2" native="true">
+           <property name="geometry">
+            <rect>
+             <x>330</x>
+             <y>0</y>
+             <width>331</width>
+             <height>191</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_12">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_27">
+              <property name="text">
+               <string>Distinguished Names Length</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="leDistNamesLen"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_29">
+              <property name="text">
+               <string>Distinguished Names</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QTextEdit" name="teDistNames"/>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="pgCertVerify">
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_30">
+             <property name="text">
+              <string>Signature Length</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="leSignLen"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_31">
+             <property name="text">
+              <string>Signature</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QTextEdit" name="teSignature"/>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
      </widget>
-     <widget class="QWidget" name="pgCert">
-      <widget class="QLineEdit" name="leCertLen">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>20</y>
-         <width>113</width>
-         <height>28</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_21">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>131</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Certificates Length</string>
-       </property>
-      </widget>
-      <widget class="QTextEdit" name="teCertificates">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>60</y>
-         <width>491</width>
-         <height>211</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_22">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>121</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Certificates</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="pgCKEx">
-      <widget class="QTextEdit" name="teClientKey">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>70</y>
-         <width>301</width>
-         <height>91</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_25">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>60</y>
-         <width>71</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Key</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="leClientKeyLen">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>20</y>
-         <width>113</width>
-         <height>28</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_23">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>121</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Key Length</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="pgCertReq">
-      <widget class="QLineEdit" name="leCertTypesCount">
-       <property name="geometry">
-        <rect>
-         <x>180</x>
-         <y>20</y>
-         <width>113</width>
-         <height>28</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_26">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>161</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Certificate Types Count</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="leDistNamesLen">
-       <property name="geometry">
-        <rect>
-         <x>580</x>
-         <y>20</y>
-         <width>113</width>
-         <height>28</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_27">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>20</y>
-         <width>191</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Distinguished Names Length</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_28">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>121</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Certificate Types</string>
-       </property>
-      </widget>
-      <widget class="QTextEdit" name="teCertTypes">
-       <property name="geometry">
-        <rect>
-         <x>180</x>
-         <y>70</y>
-         <width>104</width>
-         <height>111</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QTextEdit" name="teDistNames">
-       <property name="geometry">
-        <rect>
-         <x>580</x>
-         <y>60</y>
-         <width>104</width>
-         <height>111</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_29">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>60</y>
-         <width>151</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Distinguished Names</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="pgCertVerify">
-      <widget class="QLineEdit" name="leSignLen">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>30</y>
-         <width>113</width>
-         <height>28</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_30">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>30</y>
-         <width>121</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Signature Length</string>
-       </property>
-      </widget>
-      <widget class="QTextEdit" name="teSignature">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>80</y>
-         <width>111</width>
-         <height>101</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_31">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>90</y>
-         <width>121</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Signature</string>
-       </property>
-      </widget>
+     <widget class="QWidget" name="tabApplicationData">
+      <attribute name="title">
+       <string>Application Data</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_13">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Data</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QTextEdit" name="teAppData"/>
+       </item>
+      </layout>
      </widget>
     </widget>
-   </widget>
-   <widget class="QWidget" name="tabApplicationData">
-    <attribute name="title">
-     <string>Application Data</string>
-    </attribute>
-    <widget class="QTextEdit" name="teAppData">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>40</y>
-       <width>641</width>
-       <height>231</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>63</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Data</string>
-     </property>
-    </widget>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections>
