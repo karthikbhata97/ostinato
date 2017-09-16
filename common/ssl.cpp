@@ -57,7 +57,7 @@ void SslProtocol::protoDataCopyFrom(const OstProto::Protocol &protocol)
 
 QString SslProtocol::name() const
 {
-    return QString("SSL Protocol");
+    return QString("SSL Protocol: ").append((QString::fromUtf8(data.handshake().type_showname().c_str())).split('(')[0]);
 }
 
 QString SslProtocol::shortName() const
@@ -1521,6 +1521,8 @@ QVariant SslProtocol::getName(int type, QVariant value)
                 return QString("TLS 1.1");
             case 0x0303:
                 return QString("TLS 1.2");
+            default:
+                return QString("Invalid");
         }
     }
     case sslType:
@@ -1537,6 +1539,8 @@ QVariant SslProtocol::getName(int type, QVariant value)
             return QString("Handshake");
         case 0x17:
             return QString("Application Data");
+        default:
+            return QString("Invalid");
         }
     }
     case handshakeType:
@@ -1566,6 +1570,8 @@ QVariant SslProtocol::getName(int type, QVariant value)
             return QString("CLIENT_KEY_EXCHANGE");
         case 0x14:
             return QString("FINISHED");
+        default:
+            return QString("Invalid");
         }
     }
     default:
