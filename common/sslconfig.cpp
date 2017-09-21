@@ -19,7 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 #include "sslconfig.h"
 #include "ssl.h"
-
+#include "ostprotolib.h"
+#include <QProcess>
 #include <QDebug>
 
 SslConfigForm::SslConfigForm(QWidget *parent)
@@ -634,6 +635,7 @@ void SslConfigForm::on_cbHandshakeType_currentIndexChanged(int index)
         swHandshake->setCurrentIndex(4);
         leHandshakeVersion->hide();
         labelHandshakeVersion->hide();
+        break;
     case 7:
         swHandshake->setCurrentIndex(5);
         leHandshakeVersion->hide();
@@ -655,4 +657,33 @@ void SslConfigForm::on_cbSslType_currentIndexChanged(int /*index*/)
             SslProtocol::ssl_payloadLength,
             AbstractProtocol::FieldValue
         ).toString());
+}
+
+void SslConfigForm::on_pushButton_clicked()
+{
+    QProcess tshark;
+    QString tempLocation = QString("/tmp/ost_decrypt.pcap");
+    QString keyLocation = QString("/root/Desktop/ssl/decrypt/ssl.key");
+    tshark.setStandardOutputFile("/tmp/ost_decrypted.txt");
+    tshark.start(OstProtoLib::tsharkPath(),
+            QStringList()
+            << QString("-r").append(tempLocation)
+            <<QString("-ossl.keys_list:*,443,http,%1").arg(keyLocation)
+            <<"-Ohttp,ssl"
+            <<"-Ttext"
+            <<"-V"
+            <<"http");
+    if (!tshark.waitForStarted(-1))
+    {
+        qDebug("Unable to start tshark. Check path in preferences.\n");
+    }
+
+    if (!tshark.waitForFinished(-1))
+    {
+        qDebug("Error running tshark\n");
+    }
+    else
+    {
+        qDebug("Success");
+    }
 }

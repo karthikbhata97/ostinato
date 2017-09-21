@@ -69,6 +69,7 @@ public:
 private slots:
     void on_cbHandshakeType_currentIndexChanged(int index);
     void on_cbSslType_currentIndexChanged(int index);
+    void on_pushButton_clicked();
 };
 
 #endif

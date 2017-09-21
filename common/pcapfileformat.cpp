@@ -203,6 +203,8 @@ bool PcapFileFormat::open(const QString fileName,
         QTemporaryFile pdmlFile;
         PdmlReader reader(&streams);
 
+        QFile::copy(fileName, QString("/tmp/ost_decrypt.pcap"));
+
         if (!pdmlFile.open())
         {
             error.append("Unable to open temporary file to create PDML\n");
