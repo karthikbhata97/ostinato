@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "ssl.h"
 #include "ostprotolib.h"
 #include <QProcess>
+#include <QFile>
 #include <QDebug>
 
 SslConfigForm::SslConfigForm(QWidget *parent)
@@ -156,7 +157,6 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             QStringList ciphersuites = proto->fieldData(SslProtocol::ssl_handshake_ciphersuite,
                                                         AbstractProtocol::FieldValue).toStringList();
 
-            qDebug("this shit");
             qDebug() << ciphersuites;
             if(handshakeType == ClientHello || handshakeType == ServerHello)
             {
@@ -173,7 +173,6 @@ void SslConfigForm::loadWidget(AbstractProtocol *proto)
             QStringList compMethods = proto->fieldData(SslProtocol::ssl_handshake_compMethod,
                                                    AbstractProtocol::FieldValue).toStringList();
 
-            qDebug("That shit");
             if(handshakeType == ClientHello || handshakeType == ServerHello)
             {
                 teCompMethods->setPlainText(compMethods.join("\n"));
@@ -676,14 +675,35 @@ void SslConfigForm::on_pushButton_clicked()
     if (!tshark.waitForStarted(-1))
     {
         qDebug("Unable to start tshark. Check path in preferences.\n");
+        return;
     }
 
     if (!tshark.waitForFinished(-1))
     {
         qDebug("Error running tshark\n");
+        return;
     }
-    else
-    {
-        qDebug("Success");
+    QString match = teAppData->toPlainText().left(30);
+    QString newline = QString("\n");
+    QString decryption("");
+
+    QFile file("/tmp/ost_decrypted.txt");
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug("Error reading file");
     }
+
+    QTextStream in(&file);
+    while(!in.atEnd()) {
+        QString line = in.readLine();
+        if(line.contains(match)) {
+            while(!in.atEnd() && line != newline) {
+                line = in.readLine();
+                decryption.append(line.append(newline));
+            }
+        }
+    }
+
+    file.close();
+
+    qDebug(decryption.toAscii());
 }
