@@ -57,7 +57,24 @@ void SslProtocol::protoDataCopyFrom(const OstProto::Protocol &protocol)
 
 QString SslProtocol::name() const
 {
-    return QString("SSL Protocol: ").append((QString::fromUtf8(data.handshake().type_showname().c_str())).split('(')[0]);
+    QString name;
+    switch (data.type()) {
+    case 0x14:
+        name.append("Change Cipher Spec");
+        break;
+    case 0x15:
+        name.append("Alert");
+        break;
+    case 0x16:
+        name.append((QString::fromUtf8(data.handshake().type_showname().c_str())).split('(')[0]);
+        break;
+    case 0x17:
+        name.append("Application Data");
+        break;
+    default:
+        break;
+    }
+    return QString("SSL Protocol: ").append(name);
 }
 
 QString SslProtocol::shortName() const

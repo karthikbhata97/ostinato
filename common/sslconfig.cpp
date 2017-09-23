@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "ostprotolib.h"
 #include <QProcess>
 #include <QFile>
+#include <QMessageBox>
 #include <QDebug>
 
 SslConfigForm::SslConfigForm(QWidget *parent)
@@ -704,6 +705,7 @@ void SslConfigForm::on_pushButton_clicked()
     }
 
     file.close();
-
-    qDebug(decryption.toAscii());
+    QMessageBox MsgBox;
+    MsgBox.setText(decryption);
+    MsgBox.exec();
 }
