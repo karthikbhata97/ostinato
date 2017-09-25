@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include <QProcess>
 #include <QFile>
 #include <QMessageBox>
+#include <QFileDialog>
 #include <QDebug>
 
 SslConfigForm::SslConfigForm(QWidget *parent)
@@ -663,8 +664,16 @@ void SslConfigForm::on_pushButton_clicked()
 {
     QProcess tshark;
     QString tempLocation = QString("/tmp/ost_decrypt.pcap");
-    QString keyLocation = QString("/root/Desktop/ssl/decrypt/ssl.key");
-    tshark.setStandardOutputFile("/tmp/ost_decrypted.txt");
+    QString keyLocation = QString("/tmp/ost_decrypt.key");
+    QString decryptedFile = QString("/tmp/ost_decrypted.txt");
+
+    QFileInfo check_exists(keyLocation);
+    if(!check_exists.exists()) {
+        QString keyFilePath = QFileDialog::getOpenFileName(this,tr("Open Key File"), "");
+        QFile::copy(keyFilePath, keyLocation);
+    }
+
+    tshark.setStandardOutputFile(decryptedFile);
     tshark.start(OstProtoLib::tsharkPath(),
             QStringList()
             << QString("-r").append(tempLocation)
@@ -688,7 +697,7 @@ void SslConfigForm::on_pushButton_clicked()
     QString newline = QString("\n");
     QString decryption("");
 
-    QFile file("/tmp/ost_decrypted.txt");
+    QFile file(decryptedFile);
     if(!file.open(QIODevice::ReadOnly)) {
         qDebug("Error reading file");
     }

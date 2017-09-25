@@ -94,6 +94,11 @@ PcapFileFormat::~PcapFileFormat()
 bool PcapFileFormat::open(const QString fileName,
             OstProto::StreamConfigList &streams, QString &error)
 {
+    QString keyFilePath("/tmp/ost_decrypt.key");
+    QFileInfo check_exists(keyFilePath);
+    if(check_exists.exists() && check_exists.isFile()) {
+        QFile::remove(QString(keyFilePath));
+    }
     bool isOk = false;
     QFile file(fileName);
     QTemporaryFile file2;
