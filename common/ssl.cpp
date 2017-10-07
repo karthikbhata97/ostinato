@@ -784,7 +784,8 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                     for (int i=0; i < data.handshake().ciphersuite_showname_size(); i++)
                     {
                         list.append("\n   ");
-                        list.append(QString::fromUtf8(data.handshake().ciphersuite_showname(i).c_str()));
+                        // hex value of ciphersuite is removed using a bad method (split) fix this when possible
+                        list.append(QString::fromUtf8(data.handshake().ciphersuite_showname(i).c_str()).split('(')[0]);
                     }
                     return list;
                 }
