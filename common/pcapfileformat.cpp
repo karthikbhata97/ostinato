@@ -94,11 +94,27 @@ PcapFileFormat::~PcapFileFormat()
 bool PcapFileFormat::open(const QString fileName,
             OstProto::StreamConfigList &streams, QString &error)
 {
+    // Clear previously stored temp files!!
     QString keyFilePath("/tmp/ost_decrypt.key");
+    QString tempLocation = QString("/tmp/ost_decrypt.pcap");
+    QString decryptedFile = QString("/tmp/ost_decrypted.txt");
+
     QFileInfo check_exists(keyFilePath);
     if(check_exists.exists() && check_exists.isFile()) {
         QFile::remove(QString(keyFilePath));
     }
+
+    check_exists = QFileInfo(tempLocation);
+    if(check_exists.exists() && check_exists.isFile()) {
+        QFile::remove(QString(tempLocation));
+    }
+
+    check_exists = QFileInfo(decryptedFile);
+    if(check_exists.exists() && check_exists.isFile()) {
+        QFile::remove(QString(decryptedFile));
+    }
+
+
     bool isOk = false;
     QFile file(fileName);
     QTemporaryFile file2;
