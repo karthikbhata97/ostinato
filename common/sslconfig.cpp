@@ -678,7 +678,7 @@ void SslConfigForm::on_pushButton_clicked()
             QStringList()
             << QString("-r").append(tempLocation)
             <<QString("-ossl.keys_list:*,443,http,%1").arg(keyLocation)
-            <<"-Ohttp,ssl"
+            <<"-Ohttp,ssl,data-text-lines"
             <<"-Ttext"
             <<"-V"
             <<"http");
@@ -715,6 +715,9 @@ void SslConfigForm::on_pushButton_clicked()
 
     file.close();
     QMessageBox MsgBox;
+    if(decryption=="") {
+        decryption.append("Failed to decrypt the data with provided key");
+    }
     MsgBox.setText(decryption);
     MsgBox.exec();
 }
