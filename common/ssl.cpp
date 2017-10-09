@@ -1577,25 +1577,25 @@ QVariant SslProtocol::getName(int type, QVariant value)
         switch (index)
         {
         case 0x00:
-            return QString("HELLO_REQUEST");
+            return QString("Hello Request");
         case 0x01:
-            return QString("CLIENT_HELLO");
+            return QString("Client Hello");
         case 0x02:
-            return QString("SERVER_HELLO");
+            return QString("Server Hello");
         case 0x0b:
-            return QString("CERTIFICATE");
+            return QString("Certificate");
         case 0x0c:
-            return QString("SERVER_KEY_EXCHANGE");
+            return QString("Server Key Exchange");
         case 0x0d:
-            return QString("CERTIFICATE_REQUEST");
+            return QString("Certificate Request");
         case 0x0e:
-            return QString("SERVER_DONE");
+            return QString("Server Hello Done");
         case 0x0f:
-            return QString("CERTIFICATE_VERIFY");
+            return QString("Certificate Verify");
         case 0x10:
-            return QString("CLIENT_KEY_EXCHANGE");
+            return QString("Client Key Exchange");
         case 0x14:
-            return QString("FINISHED");
+            return QString("Finished");
         default:
             return QString("Invalid");
         }
