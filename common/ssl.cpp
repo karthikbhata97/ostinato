@@ -1338,13 +1338,18 @@ bool SslProtocol::setFieldData(int index, const QVariant &value,
         case ssl_handshake_ciphersuite:
         {
             data.mutable_handshake()->clear_ciphersuite();
+            if(data.handshake().type()==0x02) {
+                data.mutable_handshake()->clear_ciphersuite_showname();
+                data.mutable_handshake()->add_ciphersuite_showname(QString("Unknown").toStdString());
+            }
             bool isOk;
             QStringList list = value.toStringList();
             for  (int i=0; i < list.size(); i++)
             {
                 uint val = list.at(i).toInt(&isOk, 16);
-                if (isOk)
+                if (isOk) {
                     data.mutable_handshake()->add_ciphersuite(val & 0xFFFF);
+                }
             }
             break;
         }
