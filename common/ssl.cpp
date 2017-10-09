@@ -877,8 +877,11 @@ QVariant SslProtocol::fieldData(int index, FieldAttrib attrib,
                     QString list;
                     for (int i=0; i < data.handshake().extension_showname_size(); i++)
                     {
-                        list.append("\n   ");
-                        list.append(data.handshake().extension_showname(i).c_str());
+                        const char *tmp = data.handshake().extension_showname(i).c_str();
+                        if(strlen(tmp)) {
+                            list.append("\n   ");
+                            list.append(tmp);
+                        }
                     }
                     return list;
                 }
