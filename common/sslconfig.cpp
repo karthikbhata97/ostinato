@@ -663,6 +663,7 @@ void SslConfigForm::on_cbSslType_currentIndexChanged(int /*index*/)
 void SslConfigForm::on_pushButton_clicked()
 {
     QProcess tshark;
+    QMessageBox MsgBox;
     QString tempLocation = QString("/tmp/ost_decrypt.pcap");
     QString keyLocation = QString("/tmp/ost_decrypt.key");
     QString decryptedFile = QString("/tmp/ost_decrypted.txt");
@@ -700,6 +701,9 @@ void SslConfigForm::on_pushButton_clicked()
     QFile file(decryptedFile);
     if(!file.open(QIODevice::ReadOnly)) {
         qDebug("Error reading file");
+        MsgBox.setText(QString("Error reading file"));
+        MsgBox.exec();
+        return;
     }
 
     QTextStream in(&file);
@@ -714,9 +718,12 @@ void SslConfigForm::on_pushButton_clicked()
     }
 
     file.close();
-    QMessageBox MsgBox;
     if(decryption=="") {
         decryption.append("Failed to decrypt the data with provided key");
+        check_exists = QFileInfo(keyLocation);
+        if(check_exists.exists() && check_exists.isFile()) {
+            QFile::remove(QString(keyLocation));
+        }
     }
     MsgBox.setText(decryption);
     MsgBox.exec();
