@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>700</width>
-    <height>350</height>
+    <height>436</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -260,7 +260,7 @@
               <item row="1" column="1">
                <widget class="QLineEdit" name="leRandomTime">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
